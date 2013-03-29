@@ -4,5 +4,9 @@
 ** DONE Install JRuby (with rvm?)
 ** DONE Install ActiveMQ
 
-* TODO Feature 1: Play a note when a message arrives to a queue
-  
+* Development plan 
+** TODO Feature 1: Play a note when a message arrives to a queue
+
+* Improvements
+** TODO Set up ActiveMQ with Puppet or Chef
+   
