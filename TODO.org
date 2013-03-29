@@ -1,8 +1,8 @@
 * Setup environment
-** TODO Set up vagrant
-** TODO Set up a Debian box
-** TODO Install JRuby (with rvm?)
-** TODO Install ActiveMQ
+** DONE Set up vagrant
+** DONE Set up a Debian box
+** DONE Install JRuby (with rvm?)
+** DONE Install ActiveMQ
 
-* Feature 1: Play a note when a message arrives to a queue
+* TODO Feature 1: Play a note when a message arrives to a queue
   
