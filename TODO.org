@@ -16,6 +16,6 @@ SCHEDULED: <2013-03-30 Sat>
 
 * Improvements
 ** TODO Set up ActiveMQ with Puppet or Chef
-** TODO Use Nailgun to spped up launch 
+** TODO Use Nailgun to speed up launch 
 ** DONE Use Guard to speed tests
 SCHEDULED: <2013-03-30 Sat>
