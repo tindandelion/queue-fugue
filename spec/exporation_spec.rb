@@ -1,13 +1,12 @@
 require 'activemq-all-5.8.0.jar'
-require 'pry'
 
 describe "Exploring ActiveMQ interface" do
-
+  
   let(:connection) do
     connection_factory = org.apache.activemq.ActiveMQConnectionFactory.new('tcp://localhost:61616')
     connection_factory.create_connection
   end
-
+  
   let(:session) { connection.create_session(false, javax.jms.Session::AUTO_ACKNOWLEDGE) }
   
   after :each do
