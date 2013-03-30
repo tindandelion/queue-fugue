@@ -1,3 +1,5 @@
+#+CATEGORY: queue-fugue
+
 * Setup environment
 ** DONE Set up vagrant
 ** DONE Set up a Debian box
@@ -5,7 +7,12 @@
 ** DONE Install ActiveMQ
 
 * Development plan 
-** TODO Feature 1: Play a note when a message arrives to a queue
+** STARTED Feature 1: Play a note when a message arrives to a queue
+SCHEDULED: <2013-03-30 Sat>
+- [ ] Connect to the queue
+- [ ] Send a message
+- [ ] Receive a message
+- [ ] Play a note
 
 * Improvements
 ** TODO Set up ActiveMQ with Puppet or Chef
