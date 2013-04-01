@@ -7,15 +7,24 @@
 ** DONE Install ActiveMQ
 
 * Development plan 
-** STARTED Feature 1: Play a note when a message arrives to a queue
+** DONE Explore AMQ interface
 SCHEDULED: <2013-04-01 Mon>
 - [X] Connect to the queue
 - [X] Send a message
 - [X] Receive a message
+
+** TODO Explore JFugue interface
+SCHEDULED: <2013-04-02 Tue>
 - [ ] Play a note
 
+** TODO Feature: Play a note when a message is received
+- Connect to a queue given a server url and a queue name
+- Listen to the queue util Ctrl-C is pressed
+- Play a sample note
+  
 * Improvements
 ** TODO Set up ActiveMQ with Puppet or Chef
+SCHEDULED: <2013-04-04 Thu>
 ** TODO Use Nailgun to speed up launch 
 ** DONE Use Guard to speed tests
 SCHEDULED: <2013-03-30 Sat>
