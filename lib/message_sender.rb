@@ -1,5 +1,20 @@
 require 'activemq-all-5.8.0.jar'
 
+module AmqHelper
+  extend self
+  
+  def create_connection(server_url)
+    connection_factory = org.apache.activemq.ActiveMQConnectionFactory.new(server_url)
+    connection = connection_factory.create_connection
+    connection.exception_listener = self
+    connection
+  end
+
+  def create_session(connection)
+    connection.create_session(false, javax.jms.Session::AUTO_ACKNOWLEDGE)
+  end
+end
+
 class MessageSender
   def initialize(server_url, queue_name)
     @connection = create_connection(server_url)
@@ -20,14 +35,11 @@ class MessageSender
   private
   
   def create_connection(server_url)
-    connection_factory = org.apache.activemq.ActiveMQConnectionFactory.new(server_url)
-    connection = connection_factory.create_connection
-    connection.exception_listener = self
-    connection
+    AmqHelper.create_connection(server_url)
   end
   
   def create_session(connection)
-    connection.create_session(false, javax.jms.Session::AUTO_ACKNOWLEDGE)
+    AmqHelper.create_session(connection)
   end
   
   def create_producer(session, queue_name)

@@ -8,7 +8,7 @@
 
 * Development plan 
 ** STARTED Feature 1: Play a note when a message arrives to a queue
-SCHEDULED: <2013-03-30 Sat>
+SCHEDULED: <2013-04-01 Mon>
 - [X] Connect to the queue
 - [X] Send a message
 - [ ] Receive a message
