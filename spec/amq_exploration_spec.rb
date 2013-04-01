@@ -1,6 +1,9 @@
 require 'message_operators'
+require 'async_helper'
 
 describe "Exploring ActiveMQ interface" do
+  include AsyncHelper
+  
   SERVER_URL = 'tcp://localhost:61616'
   QUEUE_NAME = 'TEST'
   
@@ -21,9 +24,7 @@ describe "Exploring ActiveMQ interface" do
       receiver.listen_for_messages { |msg| message_received = true }
       
       sender.send_text_message 'Hello world!'
-      sleep 0.5 # Wait some reasonable time
-      
-      message_received.should be_true
+      eventually { message_received.should be_true }
     ensure
       receiver.close!
       sender.close!
