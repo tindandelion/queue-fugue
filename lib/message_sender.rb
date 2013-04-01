@@ -47,3 +47,30 @@ class MessageSender
     session.create_producer(queue)
   end
 end
+
+class MessageReceiver
+  include javax.jms.MessageListener
+  
+  def initialize(server_url, queue_name)
+    @connection = AmqHelper.create_connection(server_url)
+    @session = AmqHelper.create_session(@connection)
+    @queue = @session.create_queue(queue_name)
+    @connection.start
+  end
+  
+  def listen_for_messages(&block)
+    @action = block
+    consumer = @session.create_consumer(@queue)
+    consumer.message_listener = self
+  end
+  
+  def close!
+    @session.close
+    @connection.close
+  end
+  
+  def on_message(message)
+    @action.call(message)
+  end
+end
+
