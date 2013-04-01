@@ -1,7 +1,24 @@
 require 'activemq-all-5.8.0.jar'
 
-module AmqHelper
-  extend self
+class AmQueueConnector
+  include javax.jms.ExceptionListener
+  
+  def initialize(server_url, queue_name)
+    @connection = create_connection(server_url)
+    @session = create_session(@connection)
+    @queue = @session.create_queue(queue_name)
+  end
+  
+  def close!
+    @session.close
+    @connection.close
+  end
+  
+  def on_exception(ex)
+    raise ex
+  end
+  
+  private
   
   def create_connection(server_url)
     connection_factory = org.apache.activemq.ActiveMQConnectionFactory.new(server_url)
@@ -15,46 +32,23 @@ module AmqHelper
   end
 end
 
-class MessageSender
+class MessageSender < AmQueueConnector
   def initialize(server_url, queue_name)
-    @connection = create_connection(server_url)
-    @session = create_session(@connection)
-    @producer = create_producer(@session, queue_name)
+    super(server_url, queue_name)
+    @producer = @session.create_producer(@queue)
   end
   
   def send_text_message(text)
     message = @session.create_text_message('Hello world!')
     @producer.send(message)
   end
-  
-  def close!
-    @session.close
-    @connection.close
-  end
-  
-  private
-  
-  def create_connection(server_url)
-    AmqHelper.create_connection(server_url)
-  end
-  
-  def create_session(connection)
-    AmqHelper.create_session(connection)
-  end
-  
-  def create_producer(session, queue_name)
-    queue = session.create_queue(queue_name)
-    session.create_producer(queue)
-  end
 end
 
-class MessageReceiver
+class MessageReceiver < AmQueueConnector
   include javax.jms.MessageListener
   
   def initialize(server_url, queue_name)
-    @connection = AmqHelper.create_connection(server_url)
-    @session = AmqHelper.create_session(@connection)
-    @queue = @session.create_queue(queue_name)
+    super(server_url, queue_name)
     @connection.start
   end
   
@@ -64,13 +58,8 @@ class MessageReceiver
     consumer.message_listener = self
   end
   
-  def close!
-    @session.close
-    @connection.close
-  end
-  
   def on_message(message)
-    @action.call(message)
+    @action.call(message) if @action
   end
 end
 
