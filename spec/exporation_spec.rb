@@ -1,4 +1,4 @@
-require 'message_sender'
+require 'message_operators'
 
 describe "Exploring ActiveMQ interface" do
   SERVER_URL = 'tcp://localhost:61616'
