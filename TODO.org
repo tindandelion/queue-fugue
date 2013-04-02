@@ -13,13 +13,14 @@ SCHEDULED: <2013-04-01 Mon>
 - [X] Send a message
 - [X] Receive a message
 
-** STARTED Explore JFugue interface
+** DONE Explore JFugue interface
 SCHEDULED: <2013-04-02 Tue>
 - Note taken on [2013-04-02 Tue 07:17] \\
   Javadoc is [[http://www.jfugue.org/javadoc/index.html][here]]
-- [ ] Play a note
+- [X] Play a note
 
 ** TODO Feature: Play a note when a message is received
+SCHEDULED: <2013-04-03 Wed>
 - Connect to a queue given a server url and a queue name
 - Listen to the queue util Ctrl-C is pressed
 - Play a sample note
