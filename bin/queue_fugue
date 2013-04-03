@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+# -*- mode: ruby -*-
+
+$LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
+require 'application'
+require 'jfugue_note_player'
+
+app = QueueFugueApp.new(JFugueNotePlayer.new)
+app.start 'tcp://localhost:61616', 'TEST'
+
+trap('INT') do
+  puts "Good-bye!"
+  app.stop!
+end

@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# -*- mode: ruby -*-
+
+$LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
+
+require 'message_operators'
+
+sender = MessageSender.new('tcp://localhost:61616', 'TEST')
+
+loop do
+  sender.send_text_message ''
+  sleep 1
+end
+
+trap('INT') { sender.close! }
+
+  
