@@ -1,24 +1,14 @@
-require 'jfugue-4.0.3.jar'
+require 'jfugue_note_player'
 
 describe "JFugue interface" do
   it 'plays a note' do
-    player = org.jfugue.Player.new
-    
-    note = 'C'
-    player.play(note)
-  end
-  
-  it 'plays a sequence of notes' do
-    player = org.jfugue.Player.new
-    
-    notes = 'C B A'
-    player.play(notes)
+    player = JFugueNotePlayer.new
+    player.play_note
   end
   
   it 'plays notes in a sequence of calls' do
-    player = org.jfugue.Player.new
+    player = JFugueNotePlayer.new
     
-    note = 'A'
-    3.times { player.play(note) }
+    3.times { player.play_note }
   end
 end
