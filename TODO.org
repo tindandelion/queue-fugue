@@ -25,9 +25,16 @@ SCHEDULED: <2013-04-03 Wed>
 - Listen to the queue util Ctrl-C is pressed
 - Play a sample note
   
+** TODO Play background rythm when listening for messages
+SCHEDULED: <2013-04-04 Thu>
+- [ ] How to work with rythms in JFugue?
+- [ ] How to play sounds simultaneously? 
+
+** TODO Pass server address and queue name as command-line arguments
+
 * Improvements
 ** TODO Set up ActiveMQ with Puppet or Chef
-SCHEDULED: <2013-04-04 Thu>
+SCHEDULED: <2013-04-06 Sat>
 ** TODO Use Nailgun to speed up launch 
 ** DONE Use Guard to speed tests
 SCHEDULED: <2013-03-30 Sat>
