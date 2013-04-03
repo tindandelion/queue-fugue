@@ -1,4 +1,4 @@
-require 'message_operators'
+require 'messaging'
 
 class QueueFugueApp
   def initialize(note_player)

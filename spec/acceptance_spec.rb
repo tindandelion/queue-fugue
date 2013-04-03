@@ -1,4 +1,4 @@
-require 'message_operators'
+require 'messaging'
 require 'application'
 require 'async_helper'
 
@@ -18,17 +18,17 @@ end
 
 describe "Acceptance tests for Queue Fugue" do
   include AsyncHelper
-  
-  SERVER_URL = 'tcp://localhost:61616'
-  QUEUE_NAME = 'TEST'
+
+  let(:server_url) { 'tcp://localhost:61616' }
+  let(:queue_name) { 'TEST' }
   
   it 'plays a note when a new message arrives' do
     note_player = FakeNotePlayer.new
     app = QueueFugueApp.new(note_player)
     
-    app.start(SERVER_URL, QUEUE_NAME)
+    app.start(server_url, queue_name)
     begin
-      send_message(SERVER_URL, QUEUE_NAME)
+      send_message(server_url, queue_name)
       eventually { note_player.should have_played_note }
     ensure
       app.stop!

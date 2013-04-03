@@ -3,7 +3,7 @@
 
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 
-require 'message_operators'
+require 'messaging'
 
 sender = MessageSender.new('tcp://localhost:61616', 'TEST')
 
