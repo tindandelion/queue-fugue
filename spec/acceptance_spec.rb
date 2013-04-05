@@ -14,11 +14,19 @@ class FakeNotePlayer
   def has_played_note?
     @has_played_note
   end
+
+  def play_rhythm(rhythm_string)
+    @rhythm_string_played = rhythm_string
+  end
+  
+  def has_played_rhythm?(rhythm_string)
+    rhythm_string == @rhythm_string_played
+  end
 end
 
 describe "Acceptance tests for Queue Fugue" do
   include AsyncHelper
-
+  
   let(:server_url) { 'tcp://localhost:61616' }
   let(:queue_name) { 'TEST' }
   
@@ -34,6 +42,20 @@ describe "Acceptance tests for Queue Fugue" do
       app.stop!
     end
   end
+  
+  it 'plays background sound' do
+    note_player = FakeNotePlayer.new
+    app = QueueFugueApp.new(note_player)
+    
+    app.start(server_url, queue_name)
+    begin
+      app.play_chunk
+      eventually { note_player.should have_played_rhythm(QueueFugueApp::BACKGROUND_RHYTHM) }
+    ensure
+      app.stop!
+    end
+  end
+  
   
   def send_message(server_url, queue_name)
     sender = MessageSender.new(server_url, queue_name)

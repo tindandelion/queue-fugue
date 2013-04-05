@@ -11,4 +11,10 @@ describe "JFugue interface" do
     
     3.times { player.play_note }
   end
+  
+  it 'plays a rhythm' do
+    player = JFugueNotePlayer.new
+    3.times { player.play_rhythm '....*.....**...!' }
+  end
+  
 end

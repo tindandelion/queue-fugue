@@ -12,3 +12,6 @@ trap('INT') do
   puts "Good-bye!"
   app.stop!
 end
+
+app.loop
+

@@ -22,5 +22,24 @@ describe "JFugue working with rhythms" do
     player.play(pattern)
   end
   
+  it 'plays a rhythm' do
+    rhythm = org.jfugue.Rhythm.new
+    player = org.jfugue.Player.new
+    
+    rhythm.set_layer(1, "................*");
+    rhythm.set_layer(4, "........!........");
+    rhythm.add_substitution(?*.ord, "[ACOUSTIC_SNARE]s");
+    rhythm.add_substitution(?..ord, "Rs");
+    rhythm.addSubstitution(?!.ord, "[CRASH_CYMBAL_1]s");
+    
+    pattern = rhythm.get_pattern
+    start = Time.now
+    player.play(pattern)
+    player.play(pattern)
+    player.play(pattern)
+    player.play(pattern)
+    player.close
+  end
+  
 end
 

@@ -1,6 +1,8 @@
 require 'messaging'
 
 class QueueFugueApp
+  BACKGROUND_RHYTHM = '....*.....**...!'
+  
   def initialize(note_player)
     @note_player = note_player
   end
@@ -8,9 +10,19 @@ class QueueFugueApp
   def start(server_url, queue_name)
     @receiver = MessageReceiver.new(server_url, queue_name)
     @receiver.listen_for_messages { |msg| @note_player.play_note }
+    @playing = true
+  end
+  
+  def play_chunk
+    @note_player.play_rhythm BACKGROUND_RHYTHM
+  end
+  
+  def loop
+    play_chunk while @playing
   end
   
   def stop!
     @receiver.close!
+    @playing = false
   end
 end

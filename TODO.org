@@ -25,11 +25,14 @@ SCHEDULED: <2013-04-03 Wed>
 - Listen to the queue util Ctrl-C is pressed
 - Play a sample note
   
-** TODO Play background rythm when listening for messages
-SCHEDULED: <2013-04-04 Thu>
-- [ ] How to work with rythms in JFugue?
-- [ ] How to play sounds simultaneously? 
-
+** DONE Explore Log4JFugue
+SCHEDULED: <2013-04-05 Fri>
+** DONE Play background rhythm when listening for messages
+SCHEDULED: <2013-04-05 Fri>
+- [X] How to work with rythms in JFugue?
+- [X] How to play sounds simultaneously? 
+** TODO Play a drum hit when a new message arrives
+SCHEDULED: <2013-04-06 Sat>
 ** TODO Pass server address and queue name as command-line arguments
 
 * Improvements
