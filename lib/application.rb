@@ -14,7 +14,7 @@ class QueueFugueApp
   end
   
   def play_chunk
-    @note_player.play_rhythm BACKGROUND_RHYTHM
+    @note_player.play_rhythm [BACKGROUND_RHYTHM]
   end
   
   def loop
