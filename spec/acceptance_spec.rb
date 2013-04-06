@@ -16,7 +16,7 @@ describe "Acceptance tests for Queue Fugue" do
   let(:server_url) { 'tcp://localhost:61616' }
   let(:queue_name) { 'ACCEPTANCE_TEST' }
   
-  let(:background_beat) { QueueFugueApp::BACKGROUND_RHYTHM }
+  let(:background_beat) { RhythmSynthesizer::BACKGROUND_BEAT }
   
   let(:note_player) { FakeNotePlayer.new }
   let(:app) { QueueFugueApp.new(note_player) }

@@ -11,8 +11,28 @@ describe "Rhythm Synthesizer" do
   it 'maintains message count' do
     synth.message_received
     synth.messages_received.should eq(1)
-    
-    synth.reset
+  end
+  
+  it 'produces background rhythm if no messages received' do
+    rhythm = synth.produce_rhythm
+    rhythm.should eq(['....*.....**...!'])
+  end
+  
+  it 'resets message count when the rhythm is produced' do
+    synth.message_received
+    rhythm = synth.produce_rhythm
     synth.messages_received.should eq(0)
+  end
+  
+  it 'produces a beat string for a single message' do
+    synth.message_received
+    rhythm = synth.produce_rhythm
+    rhythm.should eq(['.......O........', '....*.....**...!'])
+  end
+  
+  it 'produces a beat string for 3 messages' do
+    3.times { synth.message_received }
+    rhythm = synth.produce_rhythm
+    rhythm.should eq(['..O....O.....O..', '....*.....**...!'])
   end
 end

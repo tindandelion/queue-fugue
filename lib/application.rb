@@ -2,8 +2,6 @@ require 'messaging'
 require 'rhythm_synthesizer'
 
 class QueueFugueApp
-  BACKGROUND_RHYTHM = '....*.....**...!'
-  
   def initialize(note_player)
     @note_player = note_player
     @synthesizer = RhythmSynthesizer.new
@@ -16,18 +14,7 @@ class QueueFugueApp
   end
   
   def play_chunk
-    @note_player.play_rhythm produce_rhythm
-  end
-  
-  def produce_rhythm
-    rhythm = []
-    case @synthesizer.messages_received
-    when 1 then rhythm << '.......O........'
-    when 3 then rhythm << '..O....O.....O..'
-    end
-    @synthesizer.reset
-    rhythm << BACKGROUND_RHYTHM
-    rhythm
+    @note_player.play_rhythm @synthesizer.produce_rhythm
   end
   
   def loop
