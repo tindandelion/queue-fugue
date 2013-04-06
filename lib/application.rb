@@ -14,6 +14,7 @@ class QueueFugueApp
   end
   
   def play_chunk
+    print @synthesizer.messages_received.to_s + " "
     @note_player.play_rhythm @synthesizer.produce_rhythm
   end
   

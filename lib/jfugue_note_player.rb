@@ -21,8 +21,8 @@ class JFugueNotePlayer
   
   def new_rhythm_with_instruments
     rhythm = org.jfugue.Rhythm.new
-    rhythm.add_substitution ?O.ord, '[BASS_DRUM]s'
-    rhythm.add_substitution ?*.ord, '[HAND_CLAP]s'
+    rhythm.add_substitution ?O.ord, '[ACOUSTIC_SNARE]s'
+    rhythm.add_substitution ?*.ord, '[BASS_DRUM]s'
     rhythm.add_substitution ?!.ord, '[CRYSTAL]s'
     rhythm.add_substitution ?..ord, 'Rs'
     rhythm

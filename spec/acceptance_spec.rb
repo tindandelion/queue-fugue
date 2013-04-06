@@ -37,7 +37,7 @@ describe "Acceptance tests for Queue Fugue" do
       send_message
       
       app.play_chunk
-      note_player.should played_rhythm('.......O........', background_beat)
+      note_player.should played_rhythm('........O.......', background_beat)
       
       app.play_chunk
       note_player.should played_rhythm(background_beat)
@@ -53,7 +53,7 @@ describe "Acceptance tests for Queue Fugue" do
       3.times { send_message }
       
       app.play_chunk
-      note_player.should played_rhythm('..O....O.....O..', background_beat)
+      note_player.should played_rhythm('...O....O....O..', background_beat)
       
       app.play_chunk
       note_player.should played_rhythm(background_beat)

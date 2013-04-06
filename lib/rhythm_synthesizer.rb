@@ -1,5 +1,21 @@
 class RhythmSynthesizer
   BACKGROUND_BEAT = '....*.....**...!'
+  BEAT_PATTERNS = ['........O.......',
+                   '....O.......O...',
+                   '...O....O....O..',
+                   '..O...O...O...O.',
+                   '..O..O..O..O..O.',
+                   '.O..O.O.O.O..O..',
+                   '.O.O.O.O..O.O.O.',
+                   '.O.O.O.O.O.O.O.O',
+                   '.O.O.O.OOO.O.O.O',
+                   '.O.OOO.O.O.OOO.O',
+                   '.O.OOO.OOO.OOO.O',
+                   'OO.OOO.OOO.OOO.O',
+                   'OO.OOOOOOO.OOO.O',
+                   'OO.OOOOOOOOOOO.O',
+                   'OO.OOOOOOOOOOOOO',
+                   'OOOOOOOOOOOOOOOO']
   
   attr_reader :messages_received
   
@@ -18,11 +34,11 @@ class RhythmSynthesizer
   end
   
   def calculate_rhythm
-    rhythm = []
-    case @messages_received
-    when 1 then rhythm << '.......O........'
-    when 3 then rhythm << '..O....O.....O..'
-    end
-    rhythm
+    return [] if @messages_received.zero?
+    return [BEAT_PATTERNS[min(@messages_received - 1, BEAT_PATTERNS.length - 1)]]
+  end
+  
+  def min(*nums)
+    nums.min
   end
 end

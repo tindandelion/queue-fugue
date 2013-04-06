@@ -24,15 +24,28 @@ describe "Rhythm Synthesizer" do
     synth.messages_received.should eq(0)
   end
   
-  it 'produces a beat string for a single message' do
+  it 'produces a beat string for 1 message' do
     synth.message_received
     rhythm = synth.produce_rhythm
-    rhythm.should eq(['.......O........', '....*.....**...!'])
+    rhythm.should eq(['........O.......', '....*.....**...!'])
+  end
+
+  it 'produces a beat string for 2 messages' do
+    2.times { synth.message_received }
+    rhythm = synth.produce_rhythm
+    rhythm.should eq(['....O.......O...', '....*.....**...!'])
   end
   
-  it 'produces a beat string for 3 messages' do
-    3.times { synth.message_received }
+  
+  it 'produces a beat string for 8 messages' do
+    8.times { synth.message_received }
     rhythm = synth.produce_rhythm
-    rhythm.should eq(['..O....O.....O..', '....*.....**...!'])
+    rhythm.should eq(['.O.O.O.O.O.O.O.O', '....*.....**...!'])
+  end
+  
+  it 'produces max beat string when overflows' do
+    20.times { synth.message_received }
+    rhythm = synth.produce_rhythm
+    rhythm.should eq(['OOOOOOOOOOOOOOOO', '....*.....**...!'])
   end
 end
