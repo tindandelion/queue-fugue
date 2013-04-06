@@ -33,8 +33,8 @@ SCHEDULED: <2013-04-05 Fri>
 - [X] How to play sounds simultaneously? 
 ** DONE Play a drum hit when a new message arrives
 SCHEDULED: <2013-04-06 Sat>
-** TODO Calculate a number of beats depending on the number of messages received
-SCHEDULED: <2013-04-07 Sun>
+** STARTED Calculate a number of beats depending on the number of messages received
+SCHEDULED: <2013-04-06 Sat>
 ** TODO Pass server address and queue name as command-line arguments
 
 * Improvements

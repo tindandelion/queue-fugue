@@ -14,42 +14,56 @@ describe "Acceptance tests for Queue Fugue" do
   include AsyncHelper
   
   let(:server_url) { 'tcp://localhost:61616' }
-  let(:queue_name) { 'TEST' }
+  let(:queue_name) { 'ACCEPTANCE_TEST' }
+  
+  let(:background_beat) { QueueFugueApp::BACKGROUND_RHYTHM }
+  
+  let(:note_player) { FakeNotePlayer.new }
+  let(:app) { QueueFugueApp.new(note_player) }
   
   it 'plays background sound' do
-    note_player = FakeNotePlayer.new
-    app = QueueFugueApp.new(note_player)
-    
     app.start(server_url, queue_name)
     begin
       app.play_chunk
-      note_player.should played_rhythm(QueueFugueApp::BACKGROUND_RHYTHM)
+      note_player.should played_rhythm(background_beat)
     ensure
       app.stop!
     end
   end
   
   it 'plays a drum hit when a message arrives' do
-    note_player = FakeNotePlayer.new
-    app = QueueFugueApp.new(note_player)
-    
     app.start(server_url, queue_name)
     begin
-      send_message(server_url, queue_name)
+      send_message
       
       app.play_chunk
-      note_player.should played_rhythm(QueueFugueApp::DRUM_HIT,
-                                       QueueFugueApp::BACKGROUND_RHYTHM)
-
+      note_player.should played_rhythm('.......O........', background_beat)
+      
       app.play_chunk
-      note_player.should played_rhythm(QueueFugueApp::BACKGROUND_RHYTHM)
+      note_player.should played_rhythm(background_beat)
       
     ensure
       app.stop!
     end
   end
   
-  def send_message(server_url, queue_name)
+  it 'varies the amount of instrument depending on number of messages received' do
+    app.start(server_url, queue_name)
+    begin
+      3.times { send_message }
+      
+      app.play_chunk
+      note_player.should played_rhythm('..O....O.....O..', background_beat)
+      
+      app.play_chunk
+      note_player.should played_rhythm(background_beat)
+      
+    ensure
+      app.stop!
+    end
+  end
+  
+  def send_message
     sender = MessageSender.new(server_url, queue_name)
     sender.send_text_message ''
   ensure
