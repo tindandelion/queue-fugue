@@ -21,15 +21,12 @@ GEM
     listen (0.7.3)
     lumberjack (1.0.3)
     method_source (0.8.1)
-    pry (0.9.12)
-      coderay (~> 1.0.5)
-      method_source (~> 0.8)
-      slop (~> 3.4)
     pry (0.9.12-java)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
       spoon (~> 0.0)
+    rake (10.0.4)
     rb-fsevent (0.9.3)
     rspec (2.13.0)
       rspec-core (~> 2.13.0)
@@ -51,5 +48,6 @@ DEPENDENCIES
   guard
   guard-rspec-jruby
   pry
+  rake
   rb-fsevent (~> 0.9)
   rspec

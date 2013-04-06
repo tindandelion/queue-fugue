@@ -11,7 +11,7 @@ class QueueFugueApp
   
   def start(server_url, queue_name)
     @receiver = MessageReceiver.new(server_url, queue_name)
-    @receiver.listen_for_messages { |msg| @synthesizer.messages_received += 1 }
+    @receiver.listen_for_messages { |msg| @synthesizer.message_received }
     @playing = true
   end
   
@@ -25,7 +25,7 @@ class QueueFugueApp
     when 1 then rhythm << '.......O........'
     when 3 then rhythm << '..O....O.....O..'
     end
-    @synthesizer.messages_received = 0
+    @synthesizer.reset
     rhythm << BACKGROUND_RHYTHM
     rhythm
   end

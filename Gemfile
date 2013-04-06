@@ -2,6 +2,7 @@
 source "https://rubygems.org"
 
 group 'development' do
+  gem 'rake'
   gem "rspec"
   gem 'pry'
   gem 'guard'
