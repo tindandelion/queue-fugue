@@ -1,12 +1,6 @@
 require 'jfugue-4.0.3.jar'
 
 class JFugueNotePlayer
-  NOTE = 'C'
-  
-  def play_note
-    with_player { |p| p.play NOTE }
-  end
-  
   def play_rhythm(rhythm_strings)
     rhythm = new_rhythm_with_instruments
     add_strings_to_rhythm rhythm, rhythm_strings
