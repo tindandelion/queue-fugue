@@ -33,10 +33,11 @@ SCHEDULED: <2013-04-05 Fri>
 - [X] How to play sounds simultaneously? 
 ** DONE Play a drum hit when a new message arrives
 SCHEDULED: <2013-04-06 Sat>
-** STARTED Calculate a number of beats depending on the number of messages received
+** DONE Calculate a number of beats depending on the number of messages received
 SCHEDULED: <2013-04-06 Sat>
+** TODO Split messages into classes (3 for startes) depending on their size
+SCHEDULED: <2013-04-07 Sun>
 ** TODO Pass server address and queue name as command-line arguments
-
 * Improvements
 ** TODO Set up ActiveMQ with Puppet or Chef
 SCHEDULED: <2013-04-07 Sun>

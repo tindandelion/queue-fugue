@@ -35,10 +35,8 @@ class RhythmSynthesizer
   
   def calculate_rhythm
     return [] if @messages_received.zero?
-    return [BEAT_PATTERNS[min(@messages_received - 1, BEAT_PATTERNS.length - 1)]]
-  end
-  
-  def min(*nums)
-    nums.min
+
+    beat_position = [@messages_received-1, BEAT_PATTERNS.length-1].min
+    return [BEAT_PATTERNS[beat_position]]
   end
 end
