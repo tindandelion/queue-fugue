@@ -7,6 +7,11 @@
 ** DONE Install ActiveMQ
 
 * Development plan 
+** TODO Split messages into classes (3 for startes) depending on their size
+SCHEDULED: <2013-04-07 Sun>
+** TODO Set up canonical project structure
+** TODO Split tests into unit/acceptance/explore
+** TODO Configurable message classes
 ** DONE Explore AMQ interface
 SCHEDULED: <2013-04-01 Mon>
 - [X] Connect to the queue
@@ -35,9 +40,7 @@ SCHEDULED: <2013-04-05 Fri>
 SCHEDULED: <2013-04-06 Sat>
 ** DONE Calculate a number of beats depending on the number of messages received
 SCHEDULED: <2013-04-06 Sat>
-** TODO Split messages into classes (3 for startes) depending on their size
-SCHEDULED: <2013-04-07 Sun>
-** STARTED Pass server address and queue name as command-line arguments
+** DONE Pass server address and queue name as command-line arguments
 SCHEDULED: <2013-04-07 Sun>
 * Improvements
 ** TODO Set up ActiveMQ with Puppet or Chef
