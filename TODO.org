@@ -1,11 +1,5 @@
 #+CATEGORY: queue-fugue
 
-* Setup environment
-** DONE Set up vagrant
-** DONE Set up a Debian box
-** DONE Install JRuby (with rvm?)
-** DONE Install ActiveMQ
-
 * Development plan 
 ** TODO Split messages into classes (3 for startes) depending on their size
 SCHEDULED: <2013-04-07 Sun>
@@ -42,9 +36,18 @@ SCHEDULED: <2013-04-06 Sat>
 SCHEDULED: <2013-04-06 Sat>
 ** DONE Pass server address and queue name as command-line arguments
 SCHEDULED: <2013-04-07 Sun>
+
+
 * Improvements
-** TODO Set up ActiveMQ with Puppet or Chef
-SCHEDULED: <2013-04-07 Sun>
 ** TODO Use Nailgun to speed up launch 
 ** DONE Use Guard to speed tests
 SCHEDULED: <2013-03-30 Sat>
+
+
+* Setup environment
+** TODO Set up ActiveMQ with Puppet or Chef
+SCHEDULED: <2013-04-07 Sun>
+** DONE Set up vagrant
+** DONE Set up a Debian box
+** DONE Install JRuby (with rvm?)
+** DONE Install ActiveMQ
