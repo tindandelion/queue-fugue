@@ -45,7 +45,7 @@ SCHEDULED: <2013-03-30 Sat>
 
 
 * Setup environment
-** TODO Set up ActiveMQ with Puppet or Chef
+** STARTED Set up ActiveMQ with Puppet
 SCHEDULED: <2013-04-07 Sun>
 ** DONE Set up vagrant
 ** DONE Set up a Debian box
