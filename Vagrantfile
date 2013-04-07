@@ -12,9 +12,9 @@ Vagrant.configure("2") do |config|
   config.vm.network :forwarded_port, guest: 61616, host: 61616
   
   config.vm.provision :puppet, :options => "--verbose --debug" do |puppet|
-    puppet.manifests_path = "manifests"
+    puppet.manifests_path = "puppet/manifests"
+    puppet.module_path = 'puppet/modules'
     puppet.manifest_file  = "base.pp"
-    puppet.module_path = 'modules'
   end
   
   
