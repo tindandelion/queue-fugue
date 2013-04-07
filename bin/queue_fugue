@@ -1,17 +1,42 @@
 #!/usr/bin/env ruby
-# -*- mode: ruby -*-
+
+require 'optparse'
+require 'methadone'
 
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 require 'application'
 require 'jfugue_note_player'
 
-app = QueueFugueApp.new(JFugueNotePlayer.new)
-app.start 'tcp://localhost:61616', 'TEST'
-
-trap('INT') do
-  puts "Good-bye!"
-  app.stop!
+class App
+  include Methadone::Main
+  include Methadone::CLILogging
+  
+  main do |server_address, queue_name|
+    app = QueueFugueApp.new(JFugueNotePlayer.new)
+    
+    server_url = construct_server_url(server_address)
+    info "Starting playing from queue [#{queue_name}] on [#{server_url}]"
+    
+    app.start server_url, queue_name
+    trap('INT') do
+      info "\nGood-bye!"
+      app.stop!
+    end
+    app.loop
+  end
+  
+  def self.construct_server_url(address)
+    "tcp://#{address}:61616"
+  end
+  
+  description 'Play a rhythm inspired by your ActiveMQ load'
+  
+  arg :server_address
+  arg :queue_name
+  
+  version '0.0.1'
+  
+  use_log_level_option
+  
+  go!
 end
-
-app.loop
-
