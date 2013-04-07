@@ -20,7 +20,13 @@ GEM
       rspec
     listen (0.7.3)
     lumberjack (1.0.3)
+    methadone (1.2.6)
+      bundler
     method_source (0.8.1)
+    pry (0.9.12)
+      coderay (~> 1.0.5)
+      method_source (~> 0.8)
+      slop (~> 3.4)
     pry (0.9.12-java)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
@@ -47,6 +53,7 @@ PLATFORMS
 DEPENDENCIES
   guard
   guard-rspec-jruby
+  methadone
   pry
   rake
   rb-fsevent (~> 0.9)

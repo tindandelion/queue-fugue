@@ -37,7 +37,8 @@ SCHEDULED: <2013-04-06 Sat>
 SCHEDULED: <2013-04-06 Sat>
 ** TODO Split messages into classes (3 for startes) depending on their size
 SCHEDULED: <2013-04-07 Sun>
-** TODO Pass server address and queue name as command-line arguments
+** STARTED Pass server address and queue name as command-line arguments
+SCHEDULED: <2013-04-07 Sun>
 * Improvements
 ** TODO Set up ActiveMQ with Puppet or Chef
 SCHEDULED: <2013-04-07 Sun>

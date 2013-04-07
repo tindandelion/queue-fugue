@@ -1,6 +1,8 @@
 # A sample Gemfile
 source "https://rubygems.org"
 
+gem 'methadone'
+
 group 'development' do
   gem 'rake'
   gem "rspec"
