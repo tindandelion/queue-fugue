@@ -53,7 +53,7 @@ describe "Acceptance tests for Queue Fugue" do
     app.start(server_url, queue_name)
     begin
       3.times { send_message text_with_length(5) }
-      send_message text_with_length(15)
+      send_message text_with_length(100)
       
       app.play_chunk
       note_player.should played_rhythm('........+.......', '...O....O....O..', background_beat)

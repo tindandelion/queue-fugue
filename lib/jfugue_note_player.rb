@@ -23,6 +23,8 @@ class JFugueNotePlayer
     rhythm = org.jfugue.Rhythm.new
     rhythm.add_substitution ?O.ord, '[ACOUSTIC_SNARE]s'
     rhythm.add_substitution ?*.ord, '[BASS_DRUM]s'
+    rhythm.add_substitution ?+.ord, '[CRASH_CYMBAL_1]s'
+    
     rhythm.add_substitution ?!.ord, '[CRYSTAL]s'
     rhythm.add_substitution ?..ord, 'Rs'
     rhythm

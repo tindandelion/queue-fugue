@@ -39,7 +39,7 @@ class MessageSender < AmQueueConnector
   end
   
   def send_text_message(text)
-    message = @session.create_text_message('Hello world!')
+    message = @session.create_text_message(text)
     @producer.send(message)
   end
 end
