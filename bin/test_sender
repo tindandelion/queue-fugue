@@ -6,12 +6,16 @@ $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 require 'messaging'
 
 def random_interval
-  rand * 1
+  rand * 0.7
+end
+
+def produce_message
+  '!' * rand(80)
 end
 
 sender = MessageSender.new('tcp://localhost:61616', 'TEST')
 loop do
-  sender.send_text_message ''
+  sender.send_text_message produce_message
   sleep random_interval
 end
 

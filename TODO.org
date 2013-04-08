@@ -1,8 +1,9 @@
 #+CATEGORY: queue-fugue
 
 * Development plan 
-** TODO Split messages into classes (2 for startes) depending on their size
+** DONE Split messages into classes (2 for startes) depending on their size
 SCHEDULED: <2013-04-08 Mon>
+** TODO Configure instrument set from an external file
 ** TODO Deal with arbitrary messages (not only text messages)
 ** TODO Acceptance tests fail if there are already messages in the queue
 ** TODO Set up canonical project structure
