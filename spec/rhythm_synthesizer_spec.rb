@@ -1,51 +1,46 @@
 require 'rhythm_synthesizer'
 
 describe "Rhythm Synthesizer" do
-
+  
   let(:synth) { RhythmSynthesizer.new }
   
-  it 'has 0 messages by default' do
-    synth.messages_received.should eq(0)
-  end
+  let(:background_beat) { ['....*.....**...!'] }
+  let(:message_size) { 5 }
   
-  it 'maintains message count' do
-    synth.message_received
-    synth.messages_received.should eq(1)
-  end
-  
-  it 'produces background rhythm if no messages received' do
+  it 'produces only background rhythm track if no messages received' do
     rhythm = synth.produce_rhythm
-    rhythm.should eq(['....*.....**...!'])
+    rhythm.should eq(background_beat)
   end
   
-  it 'resets message count when the rhythm is produced' do
-    synth.message_received
-    rhythm = synth.produce_rhythm
-    synth.messages_received.should eq(0)
+  it 'resets to blank state when the rhythm is produced' do
+    synth.message_received(message_size)
+    synth.produce_rhythm
+    
+    new_rhythm = synth.produce_rhythm
+    new_rhythm.should eq(background_beat)
   end
   
-  it 'produces a beat string for 1 message' do
-    synth.message_received
+  it 'varies track intensity depending on a number of messages received' do
+    2.times { synth.message_received(message_size) }
     rhythm = synth.produce_rhythm
-    rhythm.should eq(['........O.......', '....*.....**...!'])
-  end
-
-  it 'produces a beat string for 2 messages' do
-    2.times { synth.message_received }
+    rhythm.should eq(['....O.......O...'] + background_beat)
+    
+    8.times { synth.message_received(message_size) }
     rhythm = synth.produce_rhythm
-    rhythm.should eq(['....O.......O...', '....*.....**...!'])
+    rhythm.should eq(['.O.O.O.O.O.O.O.O'] + background_beat)
   end
   
-  
-  it 'produces a beat string for 8 messages' do
-    8.times { synth.message_received }
+  it 'protects track from being overflown' do
+    20.times { synth.message_received(message_size) }
     rhythm = synth.produce_rhythm
-    rhythm.should eq(['.O.O.O.O.O.O.O.O', '....*.....**...!'])
+    rhythm.should eq(['OOOOOOOOOOOOOOOO'] + background_beat)
   end
   
-  it 'produces max beat string when overflows' do
-    20.times { synth.message_received }
+  it 'produces an additional track for very long messages' do
+    synth.message_received(message_size)
+    synth.message_received(message_size + RhythmSynthesizer::LONG_MESSAGE_THRESHOLD)
+    
     rhythm = synth.produce_rhythm
-    rhythm.should eq(['OOOOOOOOOOOOOOOO', '....*.....**...!'])
+    rhythm.should eq(['........+.......', '........O.......'] + background_beat)
   end
 end

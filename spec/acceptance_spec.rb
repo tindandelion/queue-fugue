@@ -48,12 +48,29 @@ describe "Acceptance tests for Queue Fugue" do
       app.stop!
     end
   end
+
+  it 'splits messages into different instruments' do
+    app.start(server_url, queue_name)
+    begin
+      3.times { send_message text_with_length(5) }
+      send_message text_with_length(15)
+      
+      app.play_chunk
+      note_player.should played_rhythm('........+.......', '...O....O....O..', background_beat)
+    ensure
+      app.stop!
+    end
+  end
   
-  def send_message
+  def send_message(text = '')
     sender = MessageSender.new(server_url, queue_name)
-    sender.send_text_message ''
+    sender.send_text_message text
   ensure
     sender.close!
+  end
+
+  def text_with_length(n)
+    '!' * n
   end
 end
 

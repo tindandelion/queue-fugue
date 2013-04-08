@@ -1,4 +1,5 @@
 class RhythmSynthesizer
+  LONG_MESSAGE_THRESHOLD = 10
   BACKGROUND_BEAT = '....*.....**...!'
   BEAT_PATTERNS = ['........O.......',
                    '....O.......O...',
@@ -23,7 +24,7 @@ class RhythmSynthesizer
     @messages_received = 0
   end
   
-  def message_received
+  def message_received(size)
     @messages_received += 1
   end
   

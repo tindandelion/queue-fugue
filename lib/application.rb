@@ -1,5 +1,6 @@
 require 'messaging'
 require 'rhythm_synthesizer'
+require 'pry'
 
 class QueueFugueApp
   def initialize(note_player)
@@ -9,12 +10,11 @@ class QueueFugueApp
   
   def start(server_url, queue_name)
     @receiver = MessageReceiver.new(server_url, queue_name)
-    @receiver.listen_for_messages { |msg| @synthesizer.message_received }
+    @receiver.listen_for_messages { |msg| @synthesizer.message_received(msg.text.size) }
     @playing = true
   end
   
   def play_chunk
-    print @synthesizer.messages_received.to_s + " "
     @note_player.play_rhythm @synthesizer.produce_rhythm
   end
   
