@@ -1,8 +1,8 @@
 #+CATEGORY: queue-fugue
 
 * Development plan 
-** TODO Split messages into classes (3 for startes) depending on their size
-SCHEDULED: <2013-04-07 Sun>
+** TODO Split messages into classes (2 for startes) depending on their size
+SCHEDULED: <2013-04-08 Mon>
 ** TODO Set up canonical project structure
 ** TODO Split tests into unit/acceptance/explore
 ** TODO Configurable message classes

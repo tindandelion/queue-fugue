@@ -21,7 +21,7 @@ describe "Acceptance tests for Queue Fugue" do
   let(:note_player) { FakeNotePlayer.new }
   let(:app) { QueueFugueApp.new(note_player) }
   
-  it 'plays background sound' do
+  it 'plays background beat when no activity on the queue' do
     app.start(server_url, queue_name)
     begin
       app.play_chunk
@@ -31,33 +31,19 @@ describe "Acceptance tests for Queue Fugue" do
     end
   end
   
-  it 'plays a drum hit when a message arrives' do
+  it 'plays a rhythm which intensity depends on number of messages received' do
     app.start(server_url, queue_name)
     begin
       send_message
-      
       app.play_chunk
       note_player.should played_rhythm('........O.......', background_beat)
       
-      app.play_chunk
-      note_player.should played_rhythm(background_beat)
-      
-    ensure
-      app.stop!
-    end
-  end
-  
-  it 'varies the amount of instrument depending on number of messages received' do
-    app.start(server_url, queue_name)
-    begin
       3.times { send_message }
-      
       app.play_chunk
       note_player.should played_rhythm('...O....O....O..', background_beat)
       
       app.play_chunk
       note_player.should played_rhythm(background_beat)
-      
     ensure
       app.stop!
     end
