@@ -3,10 +3,11 @@
 * Development plan 
 ** STARTED Configure instrument set from an external file
 SCHEDULED: <2013-04-09 Tue>
+** DONE Split tests into unit/acceptance/explore
+SCHEDULED: <2013-04-09 Tue>
 ** TODO Deal with arbitrary messages (not only text messages)
 ** TODO Acceptance tests fail if there are already messages in the queue
 ** TODO Set up canonical project structure
-** TODO Split tests into unit/acceptance/explore
 ** TODO Configurable message classes
 ** DONE Split messages into classes (2 for startes) depending on their size
 SCHEDULED: <2013-04-08 Mon>
