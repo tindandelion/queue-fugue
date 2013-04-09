@@ -8,6 +8,12 @@ require 'application'
 require 'jfugue_note_player'
 require 'instruments'
 
+INSTRUMENT_CONFIG = <<-EOF
+add_mapping 'O', 'ACOUSTIC_SNARE'
+add_mapping '*', 'BASS_DRUM'
+add_mapping '+', 'CRASH_CYMBAL_1'
+EOF
+
 class App
   include Methadone::Main
   include Methadone::CLILogging
@@ -32,9 +38,7 @@ class App
   
   def self.instruments
     inst = Instruments.new
-    inst.add_mapping 'O', 'ACOUSTIC_SNARE'
-    inst.add_mapping '*', 'BASS_DRUM'
-    inst.add_mapping '+', 'CRASH_CYMBAL_1'
+    inst.instance_eval INSTRUMENT_CONFIG
     inst
   end
   
