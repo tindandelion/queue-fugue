@@ -1,6 +1,10 @@
 require 'jfugue-4.0.3.jar'
 
 class JFugueNotePlayer
+  def initialize(instruments)
+    @instruments = instruments
+  end
+  
   def play_rhythm(rhythm_strings)
     rhythm = new_rhythm_with_instruments
     add_strings_to_rhythm rhythm, rhythm_strings
@@ -21,12 +25,7 @@ class JFugueNotePlayer
   
   def new_rhythm_with_instruments
     rhythm = org.jfugue.Rhythm.new
-    rhythm.add_substitution ?O.ord, '[ACOUSTIC_SNARE]s'
-    rhythm.add_substitution ?*.ord, '[BASS_DRUM]s'
-    rhythm.add_substitution ?+.ord, '[CRASH_CYMBAL_1]s'
-    
-    rhythm.add_substitution ?!.ord, '[CRYSTAL]s'
-    rhythm.add_substitution ?..ord, 'Rs'
+    @instruments.apply_to(rhythm)
     rhythm
   end
   
