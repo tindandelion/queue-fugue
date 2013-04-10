@@ -1,5 +1,6 @@
 require 'instruments'
 require 'jfugue_note_player'
+require 'configuration'
 require 'messaging'
 require 'application'
 require 'async_helper'
@@ -63,10 +64,26 @@ describe "Acceptance tests for Queue Fugue" do
       end
     end
   end
-
+  
   context 'with external configuration' do
     it 'reads configuration from the external file' do
-      pending
+      config_string = <<-EOF
+instruments do
+  map 'O', to: 'ACOUSTIC_SNARE' 
+end
+EOF
+      config = Configuration.read(file_with_contents(config_string))
+      player = TestablePlayer.new(config.instruments)
+      app = QueueFugueApp.new(player)
+      
+      app.start(server_url, queue_name)
+      begin
+        send_message
+        app.play_chunk
+        player.should played_beats('ACOUSTIC_SNARE', 1)
+      ensure
+        app.stop!
+      end
     end
   end
   
@@ -79,6 +96,10 @@ describe "Acceptance tests for Queue Fugue" do
   
   def text_with_length(n)
     '!' * n
+  end
+
+  def file_with_contents(string)
+    double(:file).stub(:read).and_return(string)
   end
 end
 
@@ -103,7 +124,7 @@ RSpec::Matchers.define :played_beats do |instrument, count|
   end
   
   failure_message_for_should do |player|
-    "expected player to play [#{instrument}] #{count} time(s), " +
-      "but it actually played #{player.music_string}"
+    "expected player to play [#{instrument}] #{count} time(s),\n" +
+      "but it actually played [#{player.music_string}]"
   end
 end
