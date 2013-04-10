@@ -3,12 +3,13 @@
 * Development plan 
 ** STARTED Configure instrument set from an external file
 SCHEDULED: <2013-04-10 Wed>
-** DONE Split tests into unit/acceptance/explore
-SCHEDULED: <2013-04-09 Tue>
+** TODO Rename JFugueNotePlayer -> JFuguePlayer
 ** TODO Deal with arbitrary messages (not only text messages)
 ** TODO Acceptance tests fail if there are already messages in the queue
 ** TODO Set up canonical project structure
 ** TODO Configurable message classes
+** DONE Split tests into unit/acceptance/explore
+SCHEDULED: <2013-04-09 Tue>
 ** DONE Split messages into classes (2 for startes) depending on their size
 SCHEDULED: <2013-04-08 Mon>
 ** DONE Explore AMQ interface

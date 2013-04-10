@@ -1,14 +1,8 @@
+require 'instruments'
+require 'jfugue_note_player'
 require 'messaging'
 require 'application'
 require 'async_helper'
-
-class FakeNotePlayer
-  attr_reader :rhythm_played
-  
-  def play_rhythm(rhythm_strings)
-    @rhythm_played = rhythm_strings
-  end
-end
 
 describe "Acceptance tests for Queue Fugue" do
   include AsyncHelper
@@ -16,49 +10,63 @@ describe "Acceptance tests for Queue Fugue" do
   let(:server_url) { 'tcp://localhost:61616' }
   let(:queue_name) { 'ACCEPTANCE_TEST' }
   
-  let(:background_beat) { RhythmSynthesizer::BACKGROUND_BEAT }
-  
-  let(:note_player) { FakeNotePlayer.new }
-  let(:app) { QueueFugueApp.new(note_player) }
-  
-  it 'plays background beat when no activity on the queue' do
-    app.start(server_url, queue_name)
-    begin
-      app.play_chunk
-      note_player.should played_rhythm(background_beat)
-    ensure
-      app.stop!
+  context 'with pre-configured instruments' do
+    let(:player) {
+      instruments = Instruments.new
+      instruments.add_mapping '*', 'BASS_DRUM'
+      instruments.add_mapping 'O', 'ACOUSTIC_SNARE'
+      instruments.add_mapping '+', 'CRASH_CYMBAL'
+      instruments
+      TestablePlayer.new(instruments)
+    }
+    let(:app) { QueueFugueApp.new(player) }
+    
+    it 'plays background beat when no activity on the queue' do
+      app.start(server_url, queue_name)
+      begin
+        app.play_chunk
+        player.should played_beats('BASS_DRUM', 3) # Background beat is implicitly set to '....*.....**...!'
+      ensure
+        app.stop!
+      end
     end
-  end
-  
-  it 'plays a rhythm which intensity depends on number of messages received' do
-    app.start(server_url, queue_name)
-    begin
-      send_message
-      app.play_chunk
-      note_player.should played_rhythm('........O.......', background_beat)
-      
-      3.times { send_message }
-      app.play_chunk
-      note_player.should played_rhythm('...O....O....O..', background_beat)
-      
-      app.play_chunk
-      note_player.should played_rhythm(background_beat)
-    ensure
-      app.stop!
+    
+    it 'plays a rhythm which intensity depends on number of messages received' do
+      app.start(server_url, queue_name)
+      begin
+        send_message
+        app.play_chunk
+        player.should played_beats('ACOUSTIC_SNARE', 1)
+        
+        3.times { send_message }
+        app.play_chunk
+        player.should played_beats('ACOUSTIC_SNARE', 3)
+        
+        app.play_chunk
+        player.should played_beats('ACOUSTIC_SNARE', 0)
+      ensure
+        app.stop!
+      end
+    end
+    
+    it 'splits messages into different instruments' do
+      app.start(server_url, queue_name)
+      begin
+        3.times { send_message text_with_length(5) }
+        send_message text_with_length(100)
+        
+        app.play_chunk
+        player.should played_beats('ACOUSTIC_SNARE', 3)
+        player.should played_beats('CRASH_CYMBAL', 1)
+      ensure
+        app.stop!
+      end
     end
   end
 
-  it 'splits messages into different instruments' do
-    app.start(server_url, queue_name)
-    begin
-      3.times { send_message text_with_length(5) }
-      send_message text_with_length(100)
-      
-      app.play_chunk
-      note_player.should played_rhythm('........+.......', '...O....O....O..', background_beat)
-    ensure
-      app.stop!
+  context 'with external configuration' do
+    it 'reads configuration from the external file' do
+      pending
     end
   end
   
@@ -68,19 +76,34 @@ describe "Acceptance tests for Queue Fugue" do
   ensure
     sender.close!
   end
-
+  
   def text_with_length(n)
     '!' * n
   end
 end
 
-RSpec::Matchers.define :played_rhythm do |*expected_rhythm|
-  match do |player|
-    player.rhythm_played == expected_rhythm
+class TestablePlayer < JFugueNotePlayer
+  attr_reader :music_string
+  
+  def play(pattern)
+    @music_string = pattern.music_string
   end
   
-  failure_message_for_should do |player|
-    "expected player to play #{expected_rhythm}, but actually played #{player.rhythm_played}"
+  protected
+  
+  def with_player(&block)
+    block.call(self)
   end
 end
 
+RSpec::Matchers.define :played_beats do |instrument, count|
+  match do |player|
+    beats_played = player.music_string.scan(instrument)
+    beats_played.size == count
+  end
+  
+  failure_message_for_should do |player|
+    "expected player to play [#{instrument}] #{count} time(s), " +
+      "but it actually played #{player.music_string}"
+  end
+end

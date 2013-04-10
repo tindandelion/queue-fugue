@@ -10,6 +10,15 @@ class JFugueNotePlayer
     add_strings_to_rhythm rhythm, rhythm_strings
     do_play_rhythm(rhythm)
   end
+
+  protected
+
+  def with_player(&block)
+    player = org.jfugue.Player.new
+    block.call(player)
+  ensure
+    player.close
+  end
   
   private
   
