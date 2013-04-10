@@ -32,7 +32,7 @@ RSpec::Matchers.define :played_music_string do |expected_string|
   end
   
   failure_message_for_should do |player|
-    "expected player to play string[#{expected_string}],\n" +
+    "expected player to play the string [#{expected_string}],\n" +
       "but it actually played [#{player.music_string}]"
   end
 end

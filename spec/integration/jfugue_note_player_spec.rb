@@ -8,12 +8,12 @@ describe "JFugue interface" do
     value.add_mapping 'O', 'ACOUSTIC_SNARE'
     value
   }
-
+  
   context 'with testable player' do
     
     let(:player) { TestablePlayer.new(instruments) }
     
-    it 'plays a rhythm' do
+    it 'plays a rhythm with instument substitutions' do
       player.play_rhythm ['..*..']
       player.should played_music_string('V9 L0 Rs Rs [BASS_DRUM]s Rs Rs ')
     end
@@ -24,11 +24,11 @@ describe "JFugue interface" do
                                         'L1 Rs Rs [BASS_DRUM]s Rs Rs ')
     end
   end
-
+  
   context 'with real player' do
     
     let(:player) { JFugueNotePlayer.new(instruments) }
-
+    
     it 'plays a rhythm' do
       lambda {
         player = JFugueNotePlayer.new(instruments)
