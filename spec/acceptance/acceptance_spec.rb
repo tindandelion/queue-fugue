@@ -1,5 +1,5 @@
 require 'instruments'
-require 'jfugue_note_player'
+require 'testable_player'
 require 'configuration'
 require 'messaging'
 require 'application'
@@ -12,13 +12,15 @@ describe "Acceptance tests for Queue Fugue" do
   let(:queue_name) { 'ACCEPTANCE_TEST' }
   
   context 'with pre-configured instruments' do
+    
     let(:player) {
-      instruments = Instruments.new
-      instruments.add_mapping '*', 'BASS_DRUM'
-      instruments.add_mapping 'O', 'ACOUSTIC_SNARE'
-      instruments.add_mapping '+', 'CRASH_CYMBAL'
-      instruments
-      TestablePlayer.new(instruments)
+      config = Configuration.new(TestablePlayer)
+      config.instance_eval do
+        map '*', to: 'BASS_DRUM'
+        map 'O', to: 'ACOUSTIC_SNARE'
+        map '+', to: 'CRASH_CYMBAL'
+      end
+      config.create_player
     }
     let(:app) { QueueFugueApp.new(player) }
     
@@ -68,10 +70,11 @@ describe "Acceptance tests for Queue Fugue" do
   context 'with external configuration' do
     it 'reads configuration from the external file' do
       config_string = <<-EOF
-instruments do
-  map 'O', to: 'ACOUSTIC_SNARE' 
-end
-EOF
+                       instruments do
+                         map 'O', to: 'ACOUSTIC_SNARE'
+                       end
+                      EOF
+      
       config = Configuration.new(TestablePlayer)
       config.apply_external(file_with_contents(config_string))
       player = config.create_player
@@ -98,7 +101,7 @@ EOF
   def text_with_length(n)
     '!' * n
   end
-
+  
   def file_with_contents(string)
     file = double(:file)
     file.stub(:exist?).and_return(true)
@@ -107,28 +110,3 @@ EOF
   end
 end
 
-class TestablePlayer < JFugueNotePlayer
-  attr_reader :music_string
-  
-  def play(pattern)
-    @music_string = pattern.music_string
-  end
-  
-  protected
-  
-  def with_player(&block)
-    block.call(self)
-  end
-end
-
-RSpec::Matchers.define :played_beats do |instrument, count|
-  match do |player|
-    beats_played = player.music_string.scan(instrument)
-    beats_played.size == count
-  end
-  
-  failure_message_for_should do |player|
-    "expected player to play [#{instrument}] #{count} time(s),\n" +
-      "but it actually played [#{player.music_string}]"
-  end
-end

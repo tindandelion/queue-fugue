@@ -1,4 +1,4 @@
-require 'jfugue_note_player'
+require 'testable_player'
 require 'instruments'
 
 describe "JFugue interface" do
@@ -8,14 +8,32 @@ describe "JFugue interface" do
     value.add_mapping 'O', 'ACOUSTIC_SNARE'
     value
   }
-  
-  it 'plays a rhythm' do
-    player = JFugueNotePlayer.new(instruments)
-    3.times { player.play_rhythm ['....*.....**...!'] }
+
+  context 'with testable player' do
+    
+    let(:player) { TestablePlayer.new(instruments) }
+    
+    it 'plays a rhythm' do
+      player.play_rhythm ['..*..']
+      player.should played_music_string('V9 L0 Rs Rs [BASS_DRUM]s Rs Rs ')
+    end
+    
+    it 'plays a rhythm containing several layers' do
+      player.play_rhythm ['..O..', '..*..']
+      player.should played_music_string('V9 L0 Rs Rs [ACOUSTIC_SNARE]s Rs Rs ' +
+                                        'L1 Rs Rs [BASS_DRUM]s Rs Rs ')
+    end
   end
-  
-  it 'plays a rhythm containing several layers' do
-    player = JFugueNotePlayer.new(instruments)
-    player.play_rhythm ['.......O........', '....*.....**...!'] 
+
+  context 'with real player' do
+    
+    let(:player) { JFugueNotePlayer.new(instruments) }
+
+    it 'plays a rhythm' do
+      lambda {
+        player = JFugueNotePlayer.new(instruments)
+        3.times { player.play_rhythm ['....*.....**...!'] }
+      }.should_not raise_error
+    end
   end
 end
