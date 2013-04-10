@@ -2,24 +2,21 @@
 
 require 'optparse'
 require 'methadone'
+require 'pathname'
 
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 require 'application'
 require 'jfugue_note_player'
-require 'instruments'
-
-INSTRUMENT_CONFIG = <<-EOF
-add_mapping 'O', 'ACOUSTIC_SNARE'
-add_mapping '*', 'BASS_DRUM'
-add_mapping '+', 'CRASH_CYMBAL_1'
-EOF
+require 'configuration'
 
 class App
   include Methadone::Main
   include Methadone::CLILogging
   
   main do |server_address, queue_name|
-    app = QueueFugueApp.new(JFugueNotePlayer.new(instruments))
+    config = Configuration.new(JFugueNotePlayer)
+    config.apply_external(config_file_path)
+    app = QueueFugueApp.new(config.create_player)
     
     server_url = construct_server_url(server_address)
     info "Starting playing from queue [#{queue_name}] on [#{server_url}]"
@@ -36,10 +33,8 @@ class App
     "tcp://#{address}:61616"
   end
   
-  def self.instruments
-    inst = Instruments.new
-    inst.instance_eval INSTRUMENT_CONFIG
-    inst
+  def self.config_file_path
+    Pathname('Fuguefile')
   end
   
   description 'Play a rhythm inspired by your ActiveMQ load'

@@ -1,0 +1,4 @@
+# -*- mode: ruby -*-
+instruments do
+  map '*', to: 'MARACAS'
+end

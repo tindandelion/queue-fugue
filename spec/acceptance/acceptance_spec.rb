@@ -72,8 +72,9 @@ instruments do
   map 'O', to: 'ACOUSTIC_SNARE' 
 end
 EOF
-      config = Configuration.read(file_with_contents(config_string))
-      player = TestablePlayer.new(config.instruments)
+      config = Configuration.new(TestablePlayer)
+      config.apply_external(file_with_contents(config_string))
+      player = config.create_player
       app = QueueFugueApp.new(player)
       
       app.start(server_url, queue_name)
@@ -99,7 +100,10 @@ EOF
   end
 
   def file_with_contents(string)
-    double(:file).stub(:read).and_return(string)
+    file = double(:file)
+    file.stub(:exist?).and_return(true)
+    file.stub(:read).and_return(string)
+    file
   end
 end
 

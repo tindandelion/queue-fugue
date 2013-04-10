@@ -12,6 +12,14 @@ class Instruments
     apply_custom(rhythm)
   end
   
+  def empty?
+    @substitutions.empty?
+  end
+  
+  def[](placeholder)
+    @substitutions.fetch(placeholder)
+  end
+  
   private
   
   def apply_default(rhythm)
