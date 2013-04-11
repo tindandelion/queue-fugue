@@ -1,4 +1,4 @@
-require 'rhythm_synthesizer'
+require 'queue_fugue/rhythm_synthesizer'
 
 describe "Rhythm Synthesizer" do
   

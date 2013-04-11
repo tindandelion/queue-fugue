@@ -1,8 +1,5 @@
-require 'instruments'
+require 'queue_fugue'
 require 'testable_player'
-require 'configuration'
-require 'messaging'
-require 'application'
 require 'async_helper'
 
 describe "Acceptance tests for Queue Fugue" do

@@ -1,4 +1,4 @@
-require 'jfugue-4.0.3.jar'
+require_relative 'jfugue-4.0.3.jar'
 
 class JFuguePlayer
   def initialize(instruments)

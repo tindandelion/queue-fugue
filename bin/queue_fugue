@@ -5,9 +5,8 @@ require 'methadone'
 require 'pathname'
 
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
-require 'application'
-require 'jfugue_player'
-require 'configuration'
+
+require 'queue_fugue'
 
 class App
   include Methadone::Main
@@ -42,7 +41,7 @@ class App
   arg :server_address
   arg :queue_name
   
-  version '0.0.1'
+  version QueueFugue::VERSION
   
   use_log_level_option
   

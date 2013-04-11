@@ -1,6 +1,5 @@
-require 'messaging'
-require 'rhythm_synthesizer'
-require 'pry'
+require 'queue_fugue/messaging'
+require 'queue_fugue/rhythm_synthesizer'
 
 class QueueFugueApp
   def initialize(note_player)

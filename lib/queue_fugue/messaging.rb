@@ -1,4 +1,4 @@
-require 'activemq-all-5.8.0.jar'
+require_relative 'activemq-all-5.8.0.jar'
 
 class AmQueueConnector
   include javax.jms.ExceptionListener

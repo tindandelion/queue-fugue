@@ -1,4 +1,4 @@
-require 'configuration'
+require 'queue_fugue/configuration'
 
 describe 'Configuration' do
   let(:config) { Configuration.new(:player_class) }

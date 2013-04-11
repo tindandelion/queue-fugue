@@ -6,7 +6,7 @@ SCHEDULED: <2013-04-11 Thu>
 - [X] Review acceptance tests for playing
 ** DONE Rename JFugueNotePlayer -> JFuguePlayer
 SCHEDULED: <2013-04-11 Thu>
-** TODO Set up canonical project structure
+** STARTED Set up canonical project structure
 SCHEDULED: <2013-04-11 Thu>
 ** TODO Instruments class - redundant? 
 ** TODO Deal with arbitrary messages (not only text messages)

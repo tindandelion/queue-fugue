@@ -1,5 +1,6 @@
+require 'queue_fugue/instruments'
 require 'testable_player'
-require 'instruments'
+
 
 describe "JFugue interface" do
   let(:instruments) {

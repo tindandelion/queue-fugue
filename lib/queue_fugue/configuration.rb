@@ -1,4 +1,4 @@
-require 'instruments'
+require 'queue_fugue/instruments'
 
 class Configuration
   def self.read(path)

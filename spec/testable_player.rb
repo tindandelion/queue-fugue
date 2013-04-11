@@ -1,4 +1,4 @@
-require 'jfugue_player'
+require 'queue_fugue/jfugue_player'
 
 class TestablePlayer < JFuguePlayer
   attr_reader :music_string

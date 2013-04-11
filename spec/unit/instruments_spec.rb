@@ -1,4 +1,4 @@
-require 'instruments'
+require 'queue_fugue/instruments'
 
 describe 'Instruments' do
   it 'adds default substitutions' do

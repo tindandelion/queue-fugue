@@ -1,4 +1,4 @@
-require 'messaging'
+require 'queue_fugue/messaging'
 require 'async_helper'
 
 describe "Messaging interface" do

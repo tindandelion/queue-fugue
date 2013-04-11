@@ -1,0 +1,5 @@
+require 'queue_fugue/messaging'
+require 'queue_fugue/configuration'
+require 'queue_fugue/application'
+require 'queue_fugue/jfugue_player'
+require 'queue_fugue/version'
