@@ -1,6 +1,6 @@
 require 'queue_fugue/jfugue_player'
 
-class TestablePlayer < JFuguePlayer
+class TestablePlayer < QueueFugue::JFuguePlayer
   attr_reader :music_string
   
   def play(pattern)

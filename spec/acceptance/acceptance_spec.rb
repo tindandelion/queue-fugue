@@ -2,6 +2,7 @@ require 'queue_fugue'
 require 'testable_player'
 require 'async_helper'
 
+
 describe "Acceptance tests for Queue Fugue" do
   include AsyncHelper
   
@@ -11,7 +12,7 @@ describe "Acceptance tests for Queue Fugue" do
   context 'with pre-configured instruments' do
     
     let(:player) {
-      config = Configuration.new(TestablePlayer)
+      config = QueueFugue::Configuration.new(TestablePlayer)
       config.instance_eval do
         map '*', to: 'BASS_DRUM'
         map 'O', to: 'ACOUSTIC_SNARE'
@@ -19,7 +20,7 @@ describe "Acceptance tests for Queue Fugue" do
       end
       config.create_player
     }
-    let(:app) { QueueFugueApp.new(player) }
+    let(:app) { QueueFugue::Application.new(player) }
     
     it 'plays background beat when no activity on the queue' do
       app.start(server_url, queue_name)
@@ -72,10 +73,10 @@ describe "Acceptance tests for Queue Fugue" do
                        end
                       EOF
       
-      config = Configuration.new(TestablePlayer)
+      config = QueueFugue::Configuration.new(TestablePlayer)
       config.apply_external(file_with_contents(config_string))
       player = config.create_player
-      app = QueueFugueApp.new(player)
+      app = QueueFugue::Application.new(player)
       
       app.start(server_url, queue_name)
       begin
@@ -89,7 +90,7 @@ describe "Acceptance tests for Queue Fugue" do
   end
   
   def send_message(text = '')
-    sender = MessageSender.new(server_url, queue_name)
+    sender = QueueFugue::MessageSender.new(server_url, queue_name)
     sender.send_text_message text
   ensure
     sender.close!

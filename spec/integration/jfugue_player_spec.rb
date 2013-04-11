@@ -4,7 +4,7 @@ require 'testable_player'
 
 describe "JFugue interface" do
   let(:instruments) {
-    value = Instruments.new
+    value = QueueFugue::Instruments.new
     value.add_mapping '*', 'BASS_DRUM'
     value.add_mapping 'O', 'ACOUSTIC_SNARE'
     value
@@ -27,12 +27,9 @@ describe "JFugue interface" do
   end
   
   context 'with real player' do
-    
-    let(:player) { JFuguePlayer.new(instruments) }
-    
     it 'plays a rhythm' do
       lambda {
-        player = JFuguePlayer.new(instruments)
+        player = QueueFugue::JFuguePlayer.new(instruments)
         3.times { player.play_rhythm ['....*.....**...!'] }
       }.should_not raise_error
     end

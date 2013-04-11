@@ -8,7 +8,7 @@ describe "Messaging interface" do
   let(:queue_name) { 'TEST' }
   
   it "sends a message to the queue" do
-    sender = MessageSender.new(server_url, queue_name)
+    sender = QueueFugue::MessageSender.new(server_url, queue_name)
     begin 
       sender.send_text_message 'Hello world!'
     ensure
@@ -17,8 +17,8 @@ describe "Messaging interface" do
   end
   
   it 'receives a message from the queue' do
-    receiver = MessageReceiver.new(server_url, queue_name)
-    sender = MessageSender.new(server_url, queue_name)
+    receiver = QueueFugue::MessageReceiver.new(server_url, queue_name)
+    sender = QueueFugue::MessageSender.new(server_url, queue_name)
     begin
       message_received = false
       receiver.listen_for_messages { |msg| message_received = true }

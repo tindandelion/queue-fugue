@@ -3,7 +3,7 @@
 
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 
-require 'messaging'
+require 'queue_fugue'
 
 def random_interval
   rand * 0.7
@@ -13,7 +13,7 @@ def produce_message
   '!' * rand(80)
 end
 
-sender = MessageSender.new('tcp://localhost:61616', 'TEST')
+sender = QueueFugue::MessageSender.new('tcp://localhost:61616', 'TEST')
 loop do
   sender.send_text_message produce_message
   sleep random_interval

@@ -1,7 +1,7 @@
 require 'queue_fugue/configuration'
 
 describe 'Configuration' do
-  let(:config) { Configuration.new(:player_class) }
+  let(:config) { QueueFugue::Configuration.new(:player_class) }
   let(:config_file) { stub(:file) }
   
   it 'creates a default mapping if file not exists' do

@@ -2,7 +2,7 @@ require 'queue_fugue/rhythm_synthesizer'
 
 describe "Rhythm Synthesizer" do
   
-  let(:synth) { RhythmSynthesizer.new }
+  let(:synth) { QueueFugue::RhythmSynthesizer.new }
   
   let(:background_beat) { ['....*.....**...!'] }
   let(:message_size) { 5 }
@@ -30,7 +30,7 @@ describe "Rhythm Synthesizer" do
   
   it 'adds one more track for very long messages' do
     synth.message_received(message_size)
-    synth.message_received(message_size + RhythmSynthesizer::LONG_MESSAGE_THRESHOLD)
+    synth.message_received(message_size + QueueFugue::RhythmSynthesizer::LONG_MESSAGE_THRESHOLD)
     
     rhythm = synth.produce_rhythm
     rhythm.should eq(['........+.......', '........O.......'] + background_beat)
@@ -38,7 +38,7 @@ describe "Rhythm Synthesizer" do
   
   it 'resets to blank state when the rhythm is produced' do
     synth.message_received(message_size)
-    synth.message_received(message_size + RhythmSynthesizer::LONG_MESSAGE_THRESHOLD)
+    synth.message_received(message_size + QueueFugue::RhythmSynthesizer::LONG_MESSAGE_THRESHOLD)
     synth.produce_rhythm
     
     new_rhythm = synth.produce_rhythm
