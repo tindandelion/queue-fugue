@@ -22,7 +22,11 @@ RSpec::Matchers.define :played_beats do |instrument, count|
   
   failure_message_for_should do |player|
     "expected player to play [#{instrument}] #{count} time(s),\n" +
-      "but it actually played [#{player.music_string}]"
+      "but it actually played #{filter_instruments(player.music_string)}"
+  end
+  
+  def filter_instruments(music_string)
+    music_string.scan(/\[\w*\]/).join(', ')
   end
 end
 

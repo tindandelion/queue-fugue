@@ -24,6 +24,28 @@ describe "Acceptance tests for Queue Fugue" do
         app.stop!
       end
     end
+
+    it 'plays a default instrument beat when a message is received' do
+      app = create_application do
+        instruments do
+          map 'x', to: 'MARACAS'
+        end
+        
+        rhythms do
+          default_instrument 'x'
+        end
+      end
+      player = app.player
+      
+      app.start(server_url, queue_name)
+      begin
+        send_message
+        app.play_chunk
+        player.should played_beats('MARACAS', 1)
+      ensure
+        app.stop!
+      end
+    end
     
     it 'plays a rhythm which intensity depends on number of messages received' do
       app = create_application do
