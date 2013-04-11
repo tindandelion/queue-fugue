@@ -2,26 +2,28 @@ module QueueFugue
   class RhythmSynthesizer
     LONG_MESSAGE_THRESHOLD = 50
     BACKGROUND_BEAT = '....*.....**...!'
-    BEAT_PATTERNS = ['........O.......',
-                     '....O.......O...',
-                     '...O....O....O..',
-                     '..O...O...O...O.',
-                     '..O..O..O..O..O.',
-                     '.O..O.O.O.O..O..',
-                     '.O.O.O.O..O.O.O.',
-                     '.O.O.O.O.O.O.O.O',
-                     '.O.O.O.OOO.O.O.O',
-                     '.O.OOO.O.O.OOO.O',
-                     '.O.OOO.OOO.OOO.O',
-                     'OO.OOO.OOO.OOO.O',
-                     'OO.OOOOOOO.OOO.O',
-                     'OO.OOOOOOOOOOO.O',
-                     'OO.OOOOOOOOOOOOO',
-                     'OOOOOOOOOOOOOOOO']
+    BEAT_PATTERNS = ['........_.......',
+                     '...._......._...',
+                     '..._...._...._..',
+                     '.._..._..._..._.',
+                     '.._.._.._.._.._.',
+                     '._.._._._._.._..',
+                     '._._._._.._._._.',
+                     '._._._._._._._._',
+                     '._._._.___._._._',
+                     '._.___._._.___._',
+                     '._.___.___.___._',
+                     '__.___.___.___._',
+                     '__._______.___._',
+                     '__.___________._',
+                     '__._____________',
+                     '________________']
     
     attr_reader :messages_received
+    attr_accessor :default_instrument
     
     def initialize
+      @default_instrument = 'O'
       @messages_received = 0
       @long_messages_received = 0
     end
@@ -36,7 +38,7 @@ module QueueFugue
     
     def produce_rhythm
       rhythm = self.class.calculate_rhythm(@long_messages_received, '+') +
-        self.class.calculate_rhythm(@messages_received)
+        self.class.calculate_rhythm(@messages_received, @default_instrument)
       
       @messages_received = 0
       @long_messages_received = 0
@@ -44,12 +46,12 @@ module QueueFugue
       rhythm + [BACKGROUND_BEAT]
     end
     
-    def self.calculate_rhythm(count, marker = 'O')
+    def self.calculate_rhythm(count, marker)
       return [] if count.zero?
       
       beat_position = [count - 1, BEAT_PATTERNS.length - 1].min
       pattern = BEAT_PATTERNS[beat_position]
-      return [pattern.sub('O', marker)]
+      return [pattern.gsub('_', marker)]
     end
   end
 end
