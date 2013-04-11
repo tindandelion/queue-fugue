@@ -1,6 +1,6 @@
 require 'jfugue-4.0.3.jar'
 
-class JFugueNotePlayer
+class JFuguePlayer
   def initialize(instruments)
     @instruments = instruments
   end
@@ -10,9 +10,9 @@ class JFugueNotePlayer
     add_strings_to_rhythm rhythm, rhythm_strings
     do_play_rhythm(rhythm)
   end
-
+  
   protected
-
+  
   def with_player(&block)
     player = org.jfugue.Player.new
     block.call(player)

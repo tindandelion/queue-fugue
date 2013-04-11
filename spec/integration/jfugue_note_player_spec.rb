@@ -27,11 +27,11 @@ describe "JFugue interface" do
   
   context 'with real player' do
     
-    let(:player) { JFugueNotePlayer.new(instruments) }
+    let(:player) { JFuguePlayer.new(instruments) }
     
     it 'plays a rhythm' do
       lambda {
-        player = JFugueNotePlayer.new(instruments)
+        player = JFuguePlayer.new(instruments)
         3.times { player.play_rhythm ['....*.....**...!'] }
       }.should_not raise_error
     end

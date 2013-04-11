@@ -1,6 +1,6 @@
-require 'jfugue_note_player'
+require 'jfugue_player'
 
-class TestablePlayer < JFugueNotePlayer
+class TestablePlayer < JFuguePlayer
   attr_reader :music_string
   
   def play(pattern)

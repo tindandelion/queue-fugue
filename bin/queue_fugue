@@ -6,7 +6,7 @@ require 'pathname'
 
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 require 'application'
-require 'jfugue_note_player'
+require 'jfugue_player'
 require 'configuration'
 
 class App
@@ -14,7 +14,7 @@ class App
   include Methadone::CLILogging
   
   main do |server_address, queue_name|
-    config = Configuration.new(JFugueNotePlayer)
+    config = Configuration.new(JFuguePlayer)
     config.apply_external(config_file_path)
     app = QueueFugueApp.new(config.create_player)
     

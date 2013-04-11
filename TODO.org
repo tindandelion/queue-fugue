@@ -1,18 +1,19 @@
 #+CATEGORY: queue-fugue
 
 * Development plan 
-** STARTED Configure instrument set from an external file [1/2]
+** DONE Configure instrument set from an external file [1/1]
 SCHEDULED: <2013-04-11 Thu>
 - [X] Review acceptance tests for playing
-- [ ] Still duplication between main file and acceptance spec
-  
-** TODO Rename JFugueNotePlayer -> JFuguePlayer
+** DONE Rename JFugueNotePlayer -> JFuguePlayer
+SCHEDULED: <2013-04-11 Thu>
 ** TODO Set up canonical project structure
+SCHEDULED: <2013-04-11 Thu>
 ** TODO Instruments class - redundant? 
 ** TODO Deal with arbitrary messages (not only text messages)
 ** TODO Configurable message classes
 ** TODO Create a sample config file on demand
 ** TODO Acceptance tests fail if there are already messages in the queue
+** TODO Still duplication between main file and acceptance spec
 ** DONE Split tests into unit/acceptance/explore
 SCHEDULED: <2013-04-09 Tue>
 ** DONE Split messages into classes (2 for startes) depending on their size
