@@ -3,8 +3,10 @@ require 'queue_fugue/rhythm_synthesizer'
 
 module QueueFugue
   class Application
-    def initialize(note_player)
-      @note_player = note_player
+    attr_reader :player
+    
+    def initialize(player)
+      @player = player
       @synthesizer = RhythmSynthesizer.new
     end
     
@@ -15,7 +17,7 @@ module QueueFugue
     end
     
     def play_chunk
-      @note_player.play_rhythm @synthesizer.produce_rhythm
+      @player.play_rhythm @synthesizer.produce_rhythm
     end
     
     def loop

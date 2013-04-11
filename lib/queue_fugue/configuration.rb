@@ -17,6 +17,10 @@ module QueueFugue
     def apply_external(path)
       instance_eval(path.read) if path.exist?
     end
+
+    def apply_block(&block)
+      instance_eval(&block)
+    end
     
     def configure_default
       map '*', to:'BASS_DRUM'

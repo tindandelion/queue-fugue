@@ -8,16 +8,12 @@ $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 
 require 'queue_fugue'
 
-include QueueFugue
-
 class Main
   include Methadone::Main
   include Methadone::CLILogging
   
   main do |server_address, queue_name|
-    config = Configuration.new(JFuguePlayer)
-    config.apply_external(config_file_path)
-    app = Application.new(config.create_player)
+    app = QueueFugue.create_application(QueueFugue::JFuguePlayer, config_file_path)
     
     server_url = construct_server_url(server_address)
     info "Starting playing from queue [#{queue_name}] on [#{server_url}]"

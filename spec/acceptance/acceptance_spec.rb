@@ -9,20 +9,13 @@ describe "Acceptance tests for Queue Fugue" do
   let(:server_url) { 'tcp://localhost:61616' }
   let(:queue_name) { 'ACCEPTANCE_TEST' }
   
-  context 'with pre-configured instruments' do
-    
-    let(:player) {
-      config = QueueFugue::Configuration.new(TestablePlayer)
-      config.instance_eval do
-        map '*', to: 'BASS_DRUM'
-        map 'O', to: 'ACOUSTIC_SNARE'
-        map '+', to: 'CRASH_CYMBAL'
-      end
-      config.create_player
-    }
-    let(:app) { QueueFugue::Application.new(player) }
-    
+  context 'playing music' do
     it 'plays background beat when no activity on the queue' do
+      app = create_application do
+        instruments { map '*', to: 'BASS_DRUM' }
+      end
+      player = app.player
+      
       app.start(server_url, queue_name)
       begin
         app.play_chunk
@@ -33,60 +26,78 @@ describe "Acceptance tests for Queue Fugue" do
     end
     
     it 'plays a rhythm which intensity depends on number of messages received' do
+      app = create_application do
+        instruments do
+          map 'O', to: 'MARACAS'
+        end
+      end
+      player = app.player
+      
       app.start(server_url, queue_name)
       begin
         send_message
         app.play_chunk
-        player.should played_beats('ACOUSTIC_SNARE', 1)
+        player.should played_beats('MARACAS', 1)
         
         3.times { send_message }
         app.play_chunk
-        player.should played_beats('ACOUSTIC_SNARE', 3)
+        player.should played_beats('MARACAS', 3)
         
         app.play_chunk
-        player.should played_beats('ACOUSTIC_SNARE', 0)
+        player.should played_beats('MARACAS', 0)
       ensure
         app.stop!
       end
     end
     
     it 'splits messages into different instruments' do
+      app = create_application do
+        instruments do
+          map 'O', to: 'MARACAS'
+          map '+', to: 'BANJO'
+        end
+      end
+      player = app.player
+      
       app.start(server_url, queue_name)
       begin
         3.times { send_message text_with_length(5) }
         send_message text_with_length(100)
         
         app.play_chunk
-        player.should played_beats('ACOUSTIC_SNARE', 3)
-        player.should played_beats('CRASH_CYMBAL', 1)
+        player.should played_beats('MARACAS', 3)
+        player.should played_beats('BANJO', 1)
       ensure
         app.stop!
       end
     end
   end
   
-  context 'with external configuration' do
+  context 'configured externally' do
     it 'reads configuration from the external file' do
       config_string = <<-EOF
                        instruments do
-                         map 'O', to: 'ACOUSTIC_SNARE'
+                         map 'O', to: 'BANJO'
                        end
                       EOF
       
-      config = QueueFugue::Configuration.new(TestablePlayer)
-      config.apply_external(file_with_contents(config_string))
-      player = config.create_player
-      app = QueueFugue::Application.new(player)
+      app = create_application(file_with_contents(config_string))
+      
+      player = app.player
       
       app.start(server_url, queue_name)
       begin
         send_message
         app.play_chunk
-        player.should played_beats('ACOUSTIC_SNARE', 1)
+        player.should played_beats('BANJO', 1)
       ensure
         app.stop!
       end
     end
+  end
+  
+  def create_application(config_file = nil, &block)
+    QueueFugue.create_application(TestablePlayer, config_file, &block)
   end
   
   def send_message(text = '')
