@@ -25,13 +25,11 @@ module QueueFugue
       @count = 0
       @criterion = criterion
     end
-
-    def satisfy?(message)
-      @criterion.call(message)
-    end
     
-    def inc
-      @count += 1
+    def process(message)
+      satisfies = @criterion.call(message)
+      @count += 1 if satisfies
+      satisfies
     end
     
     def produce_rhythm

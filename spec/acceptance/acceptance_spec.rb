@@ -73,6 +73,7 @@ describe "Acceptance tests for Queue Fugue" do
     end
     
     it 'splits messages into different instruments according to configured rules' do
+      pending
       long_message_size = 20
       
       app = create_application do

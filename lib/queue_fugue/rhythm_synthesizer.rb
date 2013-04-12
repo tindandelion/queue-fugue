@@ -14,11 +14,7 @@ module QueueFugue
     end
     
     def message_received(message)
-      select_counter(message).inc
-    end
-    
-    def select_counter(message)
-      @counters.find { |c| c.satisfy?(message) }
+      @counters.any? { |c| c.process(message) }
     end
     
     def produce_rhythm
