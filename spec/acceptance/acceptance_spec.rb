@@ -72,19 +72,26 @@ describe "Acceptance tests for Queue Fugue" do
       end
     end
     
-    it 'splits messages into different instruments' do
+    it 'splits messages into different instruments according to configured rules' do
+      long_message_size = 20
+      
       app = create_application do
         instruments do
           map 'O', to: 'MARACAS'
           map '+', to: 'BANJO'
         end
+        
+        rhythms do
+          play '+', when: ->(msg) { msg.text.length > long_message_size }
+        end
       end
+      
       player = app.player
       
       app.start(server_url, queue_name)
       begin
         3.times { send_message text_with_length(5) }
-        send_message text_with_length(100)
+        send_message text_with_length(long_message_size + 1)
         
         app.play_chunk
         player.should played_beats('MARACAS', 3)

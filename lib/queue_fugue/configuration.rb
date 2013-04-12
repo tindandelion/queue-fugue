@@ -46,5 +46,8 @@ module QueueFugue
       @default_instrument = args.first unless args.empty?
       @default_instrument
     end
+
+    def play(placeholder, params = {})
+    end
   end
 end
