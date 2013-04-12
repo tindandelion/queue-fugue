@@ -33,11 +33,17 @@ module QueueFugue
     end
     
     def instruments(&block)
-      block.call(self) if block
+      instance_eval(&block) if block
       @instruments
     end
-
+    
     def rhythms(&block)
+      instance_eval &block
+    end
+    
+    def default_instrument(*args)
+      @default_instrument = args.first unless args.empty?
+      @default_instrument
     end
     
     def create_player

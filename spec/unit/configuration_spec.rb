@@ -3,6 +3,14 @@ require 'queue_fugue/configuration'
 describe 'Configuration' do
   let(:config) { QueueFugue::Configuration.new(:player_class) }
   let(:config_file) { stub(:file) }
+
+  it 'holds the default instrument' do
+    config.rhythms do
+      default_instrument 'x'
+    end
+    
+    config.default_instrument.should eq('x')
+  end
   
   it 'creates a default mapping if file not exists' do
     config_file.should_receive(:exist?).and_return(false)
