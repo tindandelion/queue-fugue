@@ -20,9 +20,14 @@ module QueueFugue
     attr_reader :marker
     attr_reader :count
     
-    def initialize(marker)
+    def initialize(marker, criterion = lambda { |msg| true })
       @marker = marker
       @count = 0
+      @criterion = criterion
+    end
+
+    def satisfy?(message)
+      @criterion.call(message)
     end
     
     def inc

@@ -1,5 +1,13 @@
 require 'queue_fugue/rhythm_synthesizer'
 
+class TestMessage
+  attr_accessor :text
+
+  def initialize(size)
+    @text = '!' * size
+  end
+end
+
 describe "Rhythm Synthesizer" do
   
   let(:background_beat) { ['....*.....**...!'] }
@@ -12,39 +20,23 @@ describe "Rhythm Synthesizer" do
     rhythm.should eq(background_beat)
   end
   
-  it 'plays an instrument beat when a message is received' do
-    synth.message_received(message_size)
-    rhythm = synth.produce_rhythm
-    rhythm.should eq(['........O.......'] + background_beat)
-  end
-  
-  it 'adds audio track with intensity depending on a number of messages received' do
-    2.times { synth.message_received(message_size) }
-    rhythm = synth.produce_rhythm
-    rhythm.should eq(['....O.......O...'] + background_beat)
-    
-    8.times { synth.message_received(message_size) }
+  it 'mixes backround beat and the rhythm produced' do
+    8.times { synth.message_received(TestMessage.new(message_size)) }
     rhythm = synth.produce_rhythm
     rhythm.should eq(['.O.O.O.O.O.O.O.O'] + background_beat)
   end
   
-  it 'protects track from being overflown' do
-    20.times { synth.message_received(message_size) }
-    rhythm = synth.produce_rhythm
-    rhythm.should eq(['OOOOOOOOOOOOOOOO'] + background_beat)
-  end
-  
   it 'adds one more track for very long messages' do
-    synth.message_received(message_size)
-    synth.message_received(message_size + QueueFugue::RhythmSynthesizer::LONG_MESSAGE_THRESHOLD)
+    synth.message_received(TestMessage.new(message_size))
+    synth.message_received(TestMessage.new(message_size + QueueFugue::RhythmSynthesizer::LONG_MESSAGE_THRESHOLD))
     
     rhythm = synth.produce_rhythm
     rhythm.should eq(['........+.......', '........O.......'] + background_beat)
   end
   
   it 'resets to blank state when the rhythm is produced' do
-    synth.message_received(message_size)
-    synth.message_received(message_size + QueueFugue::RhythmSynthesizer::LONG_MESSAGE_THRESHOLD)
+    synth.message_received(TestMessage.new(message_size))
+    synth.message_received(TestMessage.new(message_size + QueueFugue::RhythmSynthesizer::LONG_MESSAGE_THRESHOLD))
     synth.produce_rhythm
     
     new_rhythm = synth.produce_rhythm

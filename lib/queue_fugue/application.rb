@@ -12,7 +12,7 @@ module QueueFugue
     
     def start(server_url, queue_name)
       @receiver = MessageReceiver.new(server_url, queue_name)
-      @receiver.listen_for_messages { |msg| @synthesizer.message_received(msg.text.size) }
+      @receiver.listen_for_messages { |msg| @synthesizer.message_received(msg) }
       @playing = true
     end
     

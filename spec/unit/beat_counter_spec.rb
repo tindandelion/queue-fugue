@@ -22,6 +22,13 @@ describe 'BeatCounter' do
     bc.produce_rhythm.should eq(['.x.x.x.x.x.x.x.x'])
   end
   
+  it 'protects counter from being overflown' do
+    bc = QueueFugue::BeatCounter.new('x')
+    
+    20.times { bc.inc }
+    bc.produce_rhythm.should eq(['xxxxxxxxxxxxxxxx'])
+  end
+  
   it 'resets to zero when produced rhythm' do
     bc = QueueFugue::BeatCounter.new('x')
     

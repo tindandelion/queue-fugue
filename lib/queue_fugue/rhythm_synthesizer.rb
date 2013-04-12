@@ -9,19 +9,16 @@ module QueueFugue
     
     def initialize(default_instrument)
       @default_instrument = default_instrument
-      @counters = [BeatCounter.new('+'), BeatCounter.new(default_instrument)]
+      @counters = [BeatCounter.new('+', lambda { |msg| msg.text.size >= LONG_MESSAGE_THRESHOLD }),
+                   BeatCounter.new(default_instrument)]
     end
     
-    def message_received(message_size)
-      select_counter(message_size).inc
+    def message_received(message)
+      select_counter(message).inc
     end
     
-    def select_counter(message_size)
-      if message_size >= LONG_MESSAGE_THRESHOLD
-        @counters[0]
-      else
-        @counters[1]
-      end
+    def select_counter(message)
+      @counters.find { |c| c.satisfy?(message) }
     end
     
     def produce_rhythm
