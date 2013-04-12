@@ -1,3 +1,5 @@
+require 'queue_fugue/beat_counter'
+
 module QueueFugue
   class RhythmSynthesizer
     LONG_MESSAGE_THRESHOLD = 50
@@ -23,34 +25,36 @@ module QueueFugue
     
     def initialize(default_instrument)
       @default_instrument = default_instrument
-      @messages_received = 0
-      @long_messages_received = 0
+      @beat_counts = initial_beat_counts(@default_instrument)
+    end
+    
+    def initial_beat_counts(default_instrument)
+      { long_messages: BeatCounter.new('+'),
+        normal_messages: BeatCounter.new(default_instrument) }
     end
     
     def message_received(message_size)
       if message_size < LONG_MESSAGE_THRESHOLD
-        @messages_received += 1
+        @beat_counts[:normal_messages].inc
       else
-        @long_messages_received += 1
+        @beat_counts[:long_messages].inc
       end
     end
     
     def produce_rhythm
-      rhythm = self.class.calculate_rhythm(@long_messages_received, '+') +
-        self.class.calculate_rhythm(@messages_received, @default_instrument)
+      rhythm = @beat_counts.values.inject([]) { |res, bc| res + self.class.calculate_rhythm(bc) }
       
-      @messages_received = 0
-      @long_messages_received = 0
+      @beat_counts = initial_beat_counts(@default_instrument)
       
       rhythm + [BACKGROUND_BEAT]
     end
     
-    def self.calculate_rhythm(count, marker)
-      return [] if count.zero?
+    def self.calculate_rhythm(beat_count)
+      return [] if beat_count.zero?
       
-      beat_position = [count - 1, BEAT_PATTERNS.length - 1].min
+      beat_position = [beat_count.count - 1, BEAT_PATTERNS.length - 1].min
       pattern = BEAT_PATTERNS[beat_position]
-      return [pattern.gsub('_', marker)]
+      return [pattern.gsub('_', beat_count.marker)]
     end
   end
 end

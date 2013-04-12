@@ -1,7 +1,8 @@
 require 'queue_fugue/instruments'
+require 'queue_fugue/jfugue-4.0.3.jar'
 
 describe 'Instruments' do
-
+  
   let(:instruments) { QueueFugue::Instruments.new }
   
   it 'adds default substitutions' do

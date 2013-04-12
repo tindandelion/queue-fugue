@@ -90,7 +90,7 @@ describe "Acceptance tests for Queue Fugue" do
       
       app.start(server_url, queue_name)
       begin
-        3.times { send_message text_with_length(5) }
+        3.times { send_message text_with_length(long_message_size - 1) }
         send_message text_with_length(long_message_size + 1)
         
         app.play_chunk
