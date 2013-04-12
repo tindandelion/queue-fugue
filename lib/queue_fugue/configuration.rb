@@ -8,8 +8,7 @@ module QueueFugue
       instance
     end
     
-    def initialize(player_class)
-      @player_class = player_class
+    def initialize
       @instruments = Instruments.new
       configure_default
     end
@@ -23,6 +22,8 @@ module QueueFugue
     end
     
     def configure_default
+      default_instrument 'O'
+      
       map '*', to:'BASS_DRUM'
       map 'O', to: 'ACOUSTIC_SNARE'
       map '+', to: 'CRASH_CYMBAL_1'
@@ -44,10 +45,6 @@ module QueueFugue
     def default_instrument(*args)
       @default_instrument = args.first unless args.empty?
       @default_instrument
-    end
-    
-    def create_player
-      @player_class.new(instruments)
     end
   end
 end

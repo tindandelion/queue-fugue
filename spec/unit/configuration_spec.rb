@@ -1,10 +1,18 @@
 require 'queue_fugue/configuration'
 
 describe 'Configuration' do
-  let(:config) { QueueFugue::Configuration.new(:player_class) }
+  let(:config) { QueueFugue::Configuration.new }
   let(:config_file) { stub(:file) }
 
-  it 'holds the default instrument' do
+  it 'holds default configuration after creation' do
+    config.default_instrument.should eq('O')
+    
+    config.instruments['*'].should eq('BASS_DRUM')
+    config.instruments['O'].should eq('ACOUSTIC_SNARE')
+    config.instruments['+'].should eq('CRASH_CYMBAL_1')
+  end
+  
+  it 'can override the default instrument' do
     config.rhythms do
       default_instrument 'x'
     end
@@ -12,17 +20,18 @@ describe 'Configuration' do
     config.default_instrument.should eq('x')
   end
   
-  it 'creates a default mapping if file not exists' do
-    config_file.should_receive(:exist?).and_return(false)
-    config.apply_external(config_file)
+  it 'overrides the default instrument if specified' do
+    config.instruments do
+      map 'O', to: 'MARACAS'
+    end
     
     instruments = config.instruments
+    instruments['O'].should eq('MARACAS')
     instruments['*'].should eq('BASS_DRUM')
-    instruments['O'].should eq('ACOUSTIC_SNARE')
     instruments['+'].should eq('CRASH_CYMBAL_1')
   end
   
-  it 'overrides the defaults with the mappings from the file' do
+  it 'applies an external configuration file to itself' do
     config_string = "instruments do; map 'O', to: 'MARACAS'; end"
     
     config_file.should_receive(:exist?).and_return(true)
@@ -30,9 +39,13 @@ describe 'Configuration' do
     
     config.apply_external(config_file)
     
-    instruments = config.instruments
-    instruments['O'].should eq('MARACAS')
-    instruments['*'].should eq('BASS_DRUM')
-    instruments['+'].should eq('CRASH_CYMBAL_1')
+    config.instruments['O'].should eq('MARACAS')
+  end
+  
+  it 'stays intact if external file does not exist' do
+    lambda {
+      config_file.should_receive(:exist?).and_return(false)
+      config.apply_external(config_file)
+    }.should_not raise_error
   end
 end

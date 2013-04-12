@@ -1,13 +1,13 @@
 require 'queue_fugue/messaging'
-require 'queue_fugue/rhythm_synthesizer'
+
 
 module QueueFugue
   class Application
     attr_reader :player
     
-    def initialize(player)
+    def initialize(player, synthesizer)
       @player = player
-      @synthesizer = RhythmSynthesizer.new
+      @synthesizer = synthesizer
     end
     
     def start(server_url, queue_name)

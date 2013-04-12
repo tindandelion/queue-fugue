@@ -20,10 +20,9 @@ module QueueFugue
                      '________________']
     
     attr_reader :messages_received
-    attr_accessor :default_instrument
     
-    def initialize
-      @default_instrument = 'O'
+    def initialize(default_instrument)
+      @default_instrument = default_instrument
       @messages_received = 0
       @long_messages_received = 0
     end

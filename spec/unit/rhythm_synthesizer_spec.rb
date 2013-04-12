@@ -1,23 +1,21 @@
 require 'queue_fugue/rhythm_synthesizer'
 
 describe "Rhythm Synthesizer" do
-
+  
   let(:background_beat) { ['....*.....**...!'] }
   let(:message_size) { 5 }
   
-  let(:synth) { QueueFugue::RhythmSynthesizer.new }
+  let(:synth) { QueueFugue::RhythmSynthesizer.new('O') }
   
   it 'produces only background rhythm track if no messages received' do
     rhythm = synth.produce_rhythm
     rhythm.should eq(background_beat)
   end
-
-  it 'configures a default instrument' do
-    synth.default_instrument = 'x'
+  
+  it 'plays an instrument beat when a message is received' do
     synth.message_received(message_size)
-    
     rhythm = synth.produce_rhythm
-    rhythm.should eq(['........x.......'] + background_beat)
+    rhythm.should eq(['........O.......'] + background_beat)
   end
   
   it 'adds audio track with intensity depending on a number of messages received' do
