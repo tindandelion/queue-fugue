@@ -2,17 +2,12 @@ require 'queue_fugue/beat_counter'
 
 module QueueFugue
   class RhythmSynthesizer
-    LONG_MESSAGE_THRESHOLD = 50
     BACKGROUND_BEAT = '....*.....**...!'
     
     attr_reader :messages_received
     
-    def initialize(default_instrument, counters = nil)
-      @custom_counters = if counters
-                           counters
-                         else
-                           [BeatCounter.new('+', lambda { |msg| msg.text.size >= LONG_MESSAGE_THRESHOLD })]
-                         end
+    def initialize(default_instrument, custom_counters = [])
+      @custom_counters = custom_counters
       @default_counter = BeatCounter.new(default_instrument)
     end
     
