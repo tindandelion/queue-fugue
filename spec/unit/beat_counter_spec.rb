@@ -36,7 +36,7 @@ describe 'BeatCounter' do
     bc.produce_rhythm.should_not be_empty
     bc.produce_rhythm.should be_empty
   end
-
+  
   it 'only increments if message satisfies a criterion' do
     bc = QueueFugue::BeatCounter.new('x', lambda { |msg| msg == :special_message })
     
