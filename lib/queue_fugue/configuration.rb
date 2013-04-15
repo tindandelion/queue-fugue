@@ -2,6 +2,8 @@ require 'queue_fugue/instruments'
 
 module QueueFugue
   class Configuration
+    attr_reader :counters
+    
     def self.read(path)
       instance = self.new
       instance.apply_external(path)
@@ -10,6 +12,7 @@ module QueueFugue
     
     def initialize
       @instruments = Instruments.new
+      @counters = []
       configure_default
     end
     
@@ -46,8 +49,9 @@ module QueueFugue
       @default_instrument = args.first unless args.empty?
       @default_instrument
     end
-
+    
     def play(placeholder, params = {})
+      @counters << BeatCounter.new(placeholder, params[:when])
     end
   end
 end
