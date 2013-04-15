@@ -1,14 +1,14 @@
-require 'queue_fugue/beat_counter'
-
 module QueueFugue
   class RhythmSynthesizer
+    
     BACKGROUND_BEAT = '....*.....**...!'
     
     attr_reader :messages_received
+    attr_accessor :default_counter
     
-    def initialize(default_instrument, custom_counters = [])
+    def initialize(default_counter, custom_counters = [])
       @custom_counters = custom_counters
-      @default_counter = BeatCounter.new(default_instrument)
+      @default_counter = default_counter
     end
     
     def message_received(message)

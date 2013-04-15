@@ -12,7 +12,7 @@ module QueueFugue
     config.apply_block(&block) if block
     
     player = player_class.new(config.instruments)
-    synthesizer = RhythmSynthesizer.new(config.default_instrument, config.counters)
+    synthesizer = RhythmSynthesizer.new(config.default_counter, config.counters)
     Application.new(player, synthesizer)
   end
 end

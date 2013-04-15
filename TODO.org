@@ -1,8 +1,11 @@
 #+CATEGORY: queue-fugue
 
 * Development plan 
-** TODO Configurable message classes
+** DONE Configurable message classes
 SCHEDULED: <2013-04-12 Fri>
+** TODO RhythmSynthesizer - redundant?
+SCHEDULED: <2013-04-15 Mon>
+** TODO Do not separate intrument and rhythm definitions in config
 ** TODO Deal with arbitrary messages (not only text messages)
 ** TODO Instruments class - redundant? 
 ** TODO Create a sample config file on demand

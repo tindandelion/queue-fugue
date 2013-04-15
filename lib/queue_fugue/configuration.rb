@@ -50,6 +50,10 @@ module QueueFugue
       @default_instrument
     end
     
+    def default_counter
+      BeatCounter.new(@default_instrument)
+    end
+    
     def play(placeholder, params = {})
       @counters << BeatCounter.new(placeholder, params[:when])
     end

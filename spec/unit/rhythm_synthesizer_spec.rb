@@ -15,7 +15,7 @@ describe "Rhythm Synthesizer" do
   
   
   context 'with default beat counters' do
-    let(:synth) { QueueFugue::RhythmSynthesizer.new('O') }
+    let(:synth) { QueueFugue::RhythmSynthesizer.new(QueueFugue::BeatCounter.new('O')) }
     
     it 'produces only background rhythm track if no messages received' do
       rhythm = synth.produce_rhythm
@@ -39,8 +39,10 @@ describe "Rhythm Synthesizer" do
   
   context 'with custom beat counters' do
     it 'produces an additional beat track per counter' do
+      default_counter = QueueFugue::BeatCounter.new('O')
       custom_counter = QueueFugue::BeatCounter.new('+', lambda { |msg| msg.text.size > message_size })
-      synth = QueueFugue::RhythmSynthesizer.new('O', [custom_counter])
+      synth = QueueFugue::RhythmSynthesizer.new(default_counter, [custom_counter])
+      
       
       synth.message_received(TestMessage.new(message_size))
       synth.message_received(TestMessage.new(message_size + 10))

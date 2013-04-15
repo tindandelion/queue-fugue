@@ -5,7 +5,7 @@ describe 'Configuration' do
   let(:config_file) { stub(:file) }
   
   it 'holds default configuration after creation' do
-    config.default_instrument.should eq('O')
+    config.default_counter.marker.should eq('O')
     
     config.instruments['*'].should eq('BASS_DRUM')
     config.instruments['O'].should eq('ACOUSTIC_SNARE')
@@ -28,7 +28,7 @@ describe 'Configuration' do
       default_instrument 'x'
     end
     
-    config.default_instrument.should eq('x')
+    config.default_counter.marker.should eq('x')
   end
   
   it 'configures beat counters' do
