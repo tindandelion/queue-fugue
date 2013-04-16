@@ -1,16 +1,20 @@
 #+CATEGORY: queue-fugue
 
-* Development plan 
-** DONE Configurable message classes
-SCHEDULED: <2013-04-12 Fri>
-** DONE RhythmSynthesizer - redundant?
-SCHEDULED: <2013-04-16 Tue>
-** TODO Do not separate intrument and rhythm definitions in config
+* Development plan
+** TODO Background beat must be specified in config
 SCHEDULED: <2013-04-17 Wed>
+** TODO What instruments can be played at all?
+** TODO Configuration - edge cases
 ** TODO Deal with arbitrary messages (not only text messages)
 ** TODO Instruments class - redundant? 
 ** TODO Create a sample config file on demand
 ** TODO Acceptance tests fail if there are already messages in the queue
+** DONE Do not separate intrument and rhythm definitions in config
+SCHEDULED: <2013-04-16 Tue>
+** DONE RhythmSynthesizer - redundant?
+SCHEDULED: <2013-04-16 Tue>
+** DONE Configurable message classes
+SCHEDULED: <2013-04-12 Fri>
 ** DONE Still duplication between main file and acceptance spec
 ** DONE Set up canonical project structure
 SCHEDULED: <2013-04-11 Thu>

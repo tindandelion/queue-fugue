@@ -3,6 +3,7 @@ require 'queue_fugue/instruments'
 module QueueFugue
   class Configuration
     attr_reader :counters
+    attr_reader :instruments
     
     def self.read(path)
       instance = self.new
@@ -26,19 +27,9 @@ module QueueFugue
     end
     
     def configure_default
-      map '*', to:'BASS_DRUM'
-      map 'O', to: 'ACOUSTIC_SNARE'
-      map '+', to: 'CRASH_CYMBAL_1'
+      @instruments.add_mapping('*', 'BASS_DRUM')
     end
     
-    def map(placeholder, params = {to: ''})
-      @instruments.add_mapping(placeholder, params[:to])
-    end
-    
-    def instruments(&block)
-      instance_eval(&block) if block
-      @instruments
-    end
     
     def default_counter
       BeatCounter.new(@default_instrument)

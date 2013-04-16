@@ -13,8 +13,8 @@ describe "Acceptance tests for Queue Fugue" do
     
     it 'plays background beat when no activity on the queue' do
       app = create_application do
-        instruments { map '*', to: 'BASS_DRUM' }
       end
+      
       player = app.player
       
       app.start(server_url, queue_name)
