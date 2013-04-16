@@ -10,6 +10,7 @@ describe "Acceptance tests for Queue Fugue" do
   let(:queue_name) { 'ACCEPTANCE_TEST' }
   
   context 'playing music' do
+    
     it 'plays background beat when no activity on the queue' do
       app = create_application do
         instruments { map '*', to: 'BASS_DRUM' }
@@ -27,13 +28,7 @@ describe "Acceptance tests for Queue Fugue" do
     
     it 'plays a default instrument beat when a message is received' do
       app = create_application do
-        instruments do
-          map 'x', to: 'MARACAS'
-        end
-        
-        rhythms do
-          default_instrument 'x'
-        end
+        play_default 'MARACAS'
       end
       player = app.player
       
@@ -49,9 +44,7 @@ describe "Acceptance tests for Queue Fugue" do
     
     it 'plays a rhythm which intensity depends on number of messages received' do
       app = create_application do
-        instruments do
-          map 'O', to: 'MARACAS'
-        end
+        play_default 'MARACAS'
       end
       player = app.player
       
@@ -76,8 +69,9 @@ describe "Acceptance tests for Queue Fugue" do
       long_message_size = 20
       
       app = create_application do
+        play_default 'MARACAS'
+        
         instruments do
-          map 'O', to: 'MARACAS'
           map '+', to: 'BANJO'
         end
         
@@ -105,9 +99,7 @@ describe "Acceptance tests for Queue Fugue" do
   context 'configured externally' do
     it 'reads configuration from the external file' do
       config_string = <<-EOF
-                       instruments do
-                         map 'O', to: 'BANJO'
-                       end
+                       play_default 'BANJO'
                       EOF
       
       app = create_application(file_with_contents(config_string))

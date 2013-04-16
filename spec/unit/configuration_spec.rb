@@ -3,12 +3,11 @@ require 'queue_fugue/configuration'
 describe 'Configuration' do
   let(:config) { QueueFugue::Configuration.new }
   let(:config_file) { stub(:file) }
+
+  it 'has no default instrument to play'
   
   it 'holds default configuration after creation' do
-    config.default_counter.marker.should eq('O')
-    
     config.instruments['*'].should eq('BASS_DRUM')
-    config.instruments['O'].should eq('ACOUSTIC_SNARE')
     config.instruments['+'].should eq('CRASH_CYMBAL_1')
   end
   
@@ -23,13 +22,15 @@ describe 'Configuration' do
     instruments['+'].should eq('CRASH_CYMBAL_1')
   end
   
-  it 'can override the default instrument' do
-    config.rhythms do
-      default_instrument 'x'
-    end
+  it 'configures the default instrument' do
+    config.play_default 'MARACAS'
     
-    config.default_counter.marker.should eq('x')
+    instruments = config.instruments
+    instruments['A'].should eq('MARACAS')
+    
+    config.default_counter.marker.should eq('A')
   end
+  
   
   it 'configures beat counters' do
     config.rhythms do

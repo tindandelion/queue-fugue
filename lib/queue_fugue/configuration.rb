@@ -25,8 +25,6 @@ module QueueFugue
     end
     
     def configure_default
-      default_instrument 'O'
-      
       map '*', to:'BASS_DRUM'
       map 'O', to: 'ACOUSTIC_SNARE'
       map '+', to: 'CRASH_CYMBAL_1'
@@ -45,21 +43,21 @@ module QueueFugue
       instance_eval &block
     end
     
-    def default_instrument(*args)
-      @default_instrument = args.first unless args.empty?
-      @default_instrument
-    end
-    
     def default_counter
       BeatCounter.new(@default_instrument)
     end
-
+    
     def collect_counters
       counters + [default_counter]
     end
     
     def play(placeholder, params = {})
       @counters << BeatCounter.new(placeholder, params[:when])
+    end
+
+    def play_default(instrument)
+      @instruments.add_mapping('A', instrument)
+      @default_instrument = 'A'
     end
   end
 end
