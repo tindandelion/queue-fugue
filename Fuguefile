@@ -1,8 +1,4 @@
 # -*- mode: ruby -*-
-instruments do
-  map 'x', to: 'MARACAS'
-end
 
-rhythms do
-  default_instrument 'x'
-end
+play 'CRASH_CYMBAL_1', when: ->(msg){ msg.text.size > 50 }
+play 'MARACAS', default: true

@@ -28,7 +28,7 @@ describe "Acceptance tests for Queue Fugue" do
     
     it 'plays a default instrument beat when a message is received' do
       app = create_application do
-        play_default 'MARACAS'
+        play 'MARACAS', default: true
       end
       player = app.player
       
@@ -44,7 +44,7 @@ describe "Acceptance tests for Queue Fugue" do
     
     it 'plays a rhythm which intensity depends on number of messages received' do
       app = create_application do
-        play_default 'MARACAS'
+        play 'MARACAS', default: true
       end
       player = app.player
       
@@ -69,15 +69,8 @@ describe "Acceptance tests for Queue Fugue" do
       long_message_size = 20
       
       app = create_application do
-        play_default 'MARACAS'
-        
-        instruments do
-          map '+', to: 'BANJO'
-        end
-        
-        rhythms do
-          play '+', when: ->(msg) { msg.text.length > long_message_size }
-        end
+        play 'BANJO', when: ->(msg) { msg.text.length > long_message_size }
+        play 'MARACAS', default: true
       end
       
       player = app.player
@@ -88,8 +81,8 @@ describe "Acceptance tests for Queue Fugue" do
         send_message text_with_length(long_message_size + 1)
         
         app.play_chunk
-        player.should played_beats('MARACAS', 3)
         player.should played_beats('BANJO', 1)
+        player.should played_beats('MARACAS', 3)
       ensure
         app.stop!
       end
@@ -99,7 +92,7 @@ describe "Acceptance tests for Queue Fugue" do
   context 'configured externally' do
     it 'reads configuration from the external file' do
       config_string = <<-EOF
-                       play_default 'BANJO'
+                       play 'BANJO', default: true
                       EOF
       
       app = create_application(file_with_contents(config_string))

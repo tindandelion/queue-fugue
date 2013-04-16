@@ -3,8 +3,9 @@ require 'queue_fugue/configuration'
 describe 'Configuration' do
   let(:config) { QueueFugue::Configuration.new }
   let(:config_file) { stub(:file) }
-
+  
   it 'has no default instrument to play'
+  it 'treats instrument as default if no criterion is specified'
   
   it 'holds default configuration after creation' do
     config.instruments['*'].should eq('BASS_DRUM')
@@ -22,23 +23,27 @@ describe 'Configuration' do
     instruments['+'].should eq('CRASH_CYMBAL_1')
   end
   
-  it 'configures the default instrument' do
-    config.play_default 'MARACAS'
-    
+  it 'creates beat counters with corresponding instruments' do
+    config.play 'BANJO', when: ->(msg){ msg.size > 100 }
+    config.play 'PIANO', when: ->(msg){ msg.size > 1000 }
     instruments = config.instruments
-    instruments['A'].should eq('MARACAS')
     
-    config.default_counter.marker.should eq('A')
+    instruments['A'].should eq('BANJO')
+    instruments['B'].should eq('PIANO')
+    
+    config.counters.size.should eq(2)
+    config.counters[0].marker.should eq('A')
+    config.counters[1].marker.should eq('B')
   end
   
-  
-  it 'configures beat counters' do
-    config.rhythms do
-      play '+', when: ->(msg){ msg.size > 1000 }
-    end
+  it 'configures the default beat counter' do
+    config.play 'BANJO', when: ->(msg){ msg.size > 100 }
+    config.play 'MARACAS', default: true
     
-    config.counters.should_not be_empty
-    config.counters.first.marker.should eq('+')
+    instruments = config.instruments
+    instruments['B'].should eq('MARACAS')
+    
+    config.default_counter.marker.should eq('B')
   end
   
   it 'applies an external configuration file to itself' do

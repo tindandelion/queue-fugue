@@ -13,6 +13,7 @@ module QueueFugue
     def initialize
       @instruments = Instruments.new
       @counters = []
+      @next_instrument = ?A
       configure_default
     end
     
@@ -39,10 +40,6 @@ module QueueFugue
       @instruments
     end
     
-    def rhythms(&block)
-      instance_eval &block
-    end
-    
     def default_counter
       BeatCounter.new(@default_instrument)
     end
@@ -51,13 +48,20 @@ module QueueFugue
       counters + [default_counter]
     end
     
-    def play(placeholder, params = {})
-      @counters << BeatCounter.new(placeholder, params[:when])
+    def play(instrument, params = {})
+      with_next_instrument do |marker|
+        @instruments.add_mapping(marker, instrument)
+        if params[:default]
+          @default_instrument = marker
+        else
+          @counters << BeatCounter.new(marker, params[:when])
+        end
+      end
     end
-
-    def play_default(instrument)
-      @instruments.add_mapping('A', instrument)
-      @default_instrument = 'A'
+    
+    def with_next_instrument(&block)
+      block.call(@next_instrument)
+      @next_instrument = (@next_instrument.ord + 1).chr
     end
   end
 end
