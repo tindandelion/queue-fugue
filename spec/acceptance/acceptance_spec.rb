@@ -24,7 +24,7 @@ describe "Acceptance tests for Queue Fugue" do
         app.stop!
       end
     end
-
+    
     it 'plays a default instrument beat when a message is received' do
       app = create_application do
         instruments do

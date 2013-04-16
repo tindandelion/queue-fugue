@@ -1,6 +1,6 @@
 require 'queue_fugue/messaging'
+require 'queue_fugue/beat_counter'
 require 'queue_fugue/configuration'
-require 'queue_fugue/rhythm_synthesizer'
 require 'queue_fugue/application'
 require 'queue_fugue/jfugue_player'
 require 'queue_fugue/version'
@@ -12,7 +12,7 @@ module QueueFugue
     config.apply_block(&block) if block
     
     player = player_class.new(config.instruments)
-    synthesizer = RhythmSynthesizer.new(config.counters + [config.default_counter])
-    Application.new(player, synthesizer)
+    counters = config.counters + [config.default_counter]
+    Application.new(player, counters)
   end
 end

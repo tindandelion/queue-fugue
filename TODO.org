@@ -4,7 +4,7 @@
 ** DONE Configurable message classes
 SCHEDULED: <2013-04-12 Fri>
 ** TODO RhythmSynthesizer - redundant?
-SCHEDULED: <2013-04-15 Mon>
+SCHEDULED: <2013-04-16 Tue>
 ** TODO Do not separate intrument and rhythm definitions in config
 ** TODO Deal with arbitrary messages (not only text messages)
 ** TODO Instruments class - redundant? 
