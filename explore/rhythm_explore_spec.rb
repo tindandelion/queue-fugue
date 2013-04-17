@@ -1,4 +1,4 @@
-require 'jfugue-4.0.3.jar'
+require 'queue_fugue/jfugue-4.0.3.jar'
 
 describe "JFugue working with rhythms" do
   it 'plays a rhythm' do
