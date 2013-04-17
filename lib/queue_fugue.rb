@@ -12,7 +12,6 @@ module QueueFugue
     config.apply_block(&block) if block
     
     player = player_class.new(config.instruments)
-    counters = config.collect_counters
-    Application.new(player, counters)
+    Application.new(player, config.counters, config.background_beat_string)
   end
 end

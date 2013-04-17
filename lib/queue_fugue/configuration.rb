@@ -2,7 +2,6 @@ require 'queue_fugue/instruments'
 
 module QueueFugue
   class Configuration
-    attr_reader :counters
     attr_reader :instruments
     
     def self.read(path)
@@ -15,7 +14,6 @@ module QueueFugue
       @instruments = Instruments.new
       @counters = []
       @next_instrument = ?A
-      configure_default
     end
     
     def apply_external(path)
@@ -26,17 +24,16 @@ module QueueFugue
       instance_eval(&block)
     end
     
-    def configure_default
-      @instruments.add_mapping('*', 'BASS_DRUM')
+    def counters
+      if @default_instrument
+        @counters + [BeatCounter.new(@default_instrument)]
+      else
+        @counters
+      end
     end
     
-    
-    def default_counter
-      BeatCounter.new(@default_instrument)
-    end
-    
-    def collect_counters
-      counters + [default_counter]
+    def background_beat_string
+      @background_beat_string
     end
     
     def play(instrument, params = {})
@@ -49,6 +46,13 @@ module QueueFugue
         end
       end
     end
+
+    def background_beat(beat_string, substitutions = {})
+      @background_beat_string = beat_string
+      substitutions.each_pair { |marker, instr| @instruments.add_mapping(marker, instr) }
+    end
+    
+    private
     
     def with_next_instrument(&block)
       block.call(@next_instrument)

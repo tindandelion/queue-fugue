@@ -1,4 +1,6 @@
 # -*- mode: ruby -*-
 
+background_beat '.......**...*..!', '*' => 'BASS_DRUM', '!' => 'CRYSTAL'
+
 play 'CRASH_CYMBAL_1', when: ->(msg){ msg.text.size > 50 }
 play 'MARACAS', default: true

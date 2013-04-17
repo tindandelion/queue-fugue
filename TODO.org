@@ -4,6 +4,7 @@
 ** TODO Background beat must be specified in config
 SCHEDULED: <2013-04-17 Wed>
 ** TODO What instruments can be played at all?
+** TODO How timings work at all with JFugue?
 ** TODO Configuration - edge cases
 ** TODO Deal with arbitrary messages (not only text messages)
 ** TODO Instruments class - redundant? 

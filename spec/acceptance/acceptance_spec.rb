@@ -13,14 +13,15 @@ describe "Acceptance tests for Queue Fugue" do
     
     it 'plays background beat when no activity on the queue' do
       app = create_application do
+        background_beat '....*.....*....!', '*' => 'BASS_DRUM', '!' => 'CRYSTAL'
       end
-      
       player = app.player
       
       app.start(server_url, queue_name)
       begin
         app.play_chunk
-        player.should played_beats('BASS_DRUM', 3) # Background beat is implicitly set to '....*.....**...!'
+        player.should played_beats('BASS_DRUM', 2)
+        player.should played_beats('CRYSTAL', 1)
       ensure
         app.stop!
       end

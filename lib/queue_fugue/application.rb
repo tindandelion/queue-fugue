@@ -3,13 +3,12 @@ require 'queue_fugue/messaging'
 
 module QueueFugue
   class Application
-    BACKGROUND_BEAT = '....*.....**...!'
-    
     attr_reader :player
     
-    def initialize(player, beat_counters)
+    def initialize(player, beat_counters, background_beat)
       @player = player
       @beat_counters = beat_counters
+      @background_beat = background_beat
     end
     
     def start(server_url, queue_name)
@@ -39,7 +38,7 @@ module QueueFugue
     
     def produce_rhythm
       rhythm = @beat_counters.inject([]) { |res, bc| res + bc.produce_rhythm }
-      rhythm + [BACKGROUND_BEAT]
+      rhythm + [@background_beat]
     end
   end
 end

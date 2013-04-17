@@ -6,9 +6,16 @@ describe 'Configuration' do
   
   it 'has no default instrument to play'
   it 'treats instrument as default if no criterion is specified'
+  it 'has no background beat'
   
-  it 'contains instruments for background by default' do
-    config.instruments['*'].should eq('BASS_DRUM')
+  it 'configures the background beat' do
+    config.background_beat '..**..!!..', '*' => 'BANJO', '!' => 'PIANO'
+
+    config.background_beat_string.should eq('..**..!!..')
+    
+    instruments = config.instruments
+    instruments['*'].should eq('BANJO')
+    instruments['!'].should eq('PIANO')
   end
   
   it 'creates beat counters with corresponding instruments' do
@@ -18,21 +25,22 @@ describe 'Configuration' do
     instruments = config.instruments
     instruments['A'].should eq('BANJO')
     instruments['B'].should eq('PIANO')
-
+    
     counters = config.counters
     counters.size.should eq(2)
     counters[0].marker.should eq('A')
     counters[1].marker.should eq('B')
   end
   
-  it 'configures the default beat counter' do
-    config.play 'BANJO', when: ->(msg){ msg.size > 100 }
+  it 'configures the default beat counter as the last counter' do
     config.play 'MARACAS', default: true
+    config.play 'BANJO', when: ->(msg){ msg.size > 100 }
     
     instruments = config.instruments
-    instruments['B'].should eq('MARACAS')
+    instruments['A'].should eq('MARACAS')
     
-    config.default_counter.marker.should eq('B')
+    default_counter = config.counters.last
+    default_counter.marker.should eq('A')
   end
   
   it 'applies an external configuration file to itself' do
