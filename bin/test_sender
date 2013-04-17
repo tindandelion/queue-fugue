@@ -6,11 +6,11 @@ $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
 require 'queue_fugue'
 
 def random_interval
-  rand * 0.7
+  rand * 0.2
 end
 
 def produce_message
-  '!' * rand(80)
+  '!' * rand(100)
 end
 
 sender = QueueFugue::MessageSender.new('tcp://localhost:61616', 'TEST')
