@@ -20,10 +20,19 @@ module QueueFugue
     attr_reader :marker
     attr_reader :count
     
-    def initialize(marker, criterion = lambda { |msg| true })
+    def initialize(marker)
       @marker = marker
       @count = 0
-      @criterion = criterion
+      @criterion = lambda { |msg| true }
+      @scale_factor = 1
+    end
+    
+    def filter_by(&block)
+      @criterion = block
+    end
+    
+    def scale_by(factor)
+      @scale_factor = factor
     end
     
     def process(message)
@@ -43,9 +52,13 @@ module QueueFugue
     def calculate_strings
       return [] if @count.zero?
       
-      beat_position = [@count - 1, PATTERNS.length - 1].min
+      beat_position = [scaled_count - 1, PATTERNS.length - 1].min
       pattern = PATTERNS[beat_position]
       return [pattern.gsub('_', @marker)]
+    end
+    
+    def scaled_count
+      @count * @scale_factor
     end
   end
 end

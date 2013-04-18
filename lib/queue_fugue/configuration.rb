@@ -14,6 +14,7 @@ module QueueFugue
       @instruments = Instruments.new
       @counters = []
       @next_instrument = ?A
+      @scale_factor = 1
     end
     
     def apply_external(path)
@@ -26,7 +27,7 @@ module QueueFugue
     
     def counters
       if @default_instrument
-        @counters + [BeatCounter.new(@default_instrument)]
+        @counters + [new_counter(@default_instrument)]
       else
         @counters
       end
@@ -42,14 +43,20 @@ module QueueFugue
         if params[:default]
           @default_instrument = marker
         else
-          @counters << BeatCounter.new(marker, params[:when])
+          counter = new_counter(marker)
+          counter.filter_by &params[:when]
+          @counters << counter
         end
       end
     end
-
+    
     def background_beat(beat_string, substitutions = {})
       @background_beat_string = beat_string
       substitutions.each_pair { |marker, instr| @instruments.add_mapping(marker, instr) }
+    end
+    
+    def scale_factor(value)
+      @scale_factor = value
     end
     
     private
@@ -57,6 +64,12 @@ module QueueFugue
     def with_next_instrument(&block)
       block.call(@next_instrument)
       @next_instrument = (@next_instrument.ord + 1).chr
+    end
+
+    def new_counter(marker)
+      counter = BeatCounter.new(marker)
+      counter.scale_by @scale_factor
+      counter
     end
   end
 end

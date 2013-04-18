@@ -10,7 +10,7 @@ describe 'Configuration' do
   
   it 'configures the background beat' do
     config.background_beat '..**..!!..', '*' => 'BANJO', '!' => 'PIANO'
-
+    
     config.background_beat_string.should eq('..**..!!..')
     
     instruments = config.instruments

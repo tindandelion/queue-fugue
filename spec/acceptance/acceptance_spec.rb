@@ -27,22 +27,6 @@ describe "Acceptance tests for Queue Fugue" do
       end
     end
     
-    it 'plays a default instrument beat when a message is received' do
-      app = create_application do
-        play 'MARACAS', default: true
-      end
-      player = app.player
-      
-      app.start(server_url, queue_name)
-      begin
-        send_message
-        app.play_chunk
-        player.should played_beats('MARACAS', 1)
-      ensure
-        app.stop!
-      end
-    end
-    
     it 'plays a rhythm which intensity depends on number of messages received' do
       app = create_application do
         play 'MARACAS', default: true
@@ -84,6 +68,23 @@ describe "Acceptance tests for Queue Fugue" do
         app.play_chunk
         player.should played_beats('BANJO', 1)
         player.should played_beats('MARACAS', 3)
+      ensure
+        app.stop!
+      end
+    end
+
+    it 'applies a scale factor when calculating the rhythm intencity' do
+      app = create_application do
+        scale_factor 0.5
+        play 'MARACAS', default: true
+      end
+      player = app.player
+      
+      app.start(server_url, queue_name)
+      begin
+        2.times { send_message }
+        app.play_chunk
+        player.should played_beats('MARACAS', 1)
       ensure
         app.stop!
       end
