@@ -1,8 +1,11 @@
 #+CATEGORY: queue-fugue
 
 * Development plan
-** TODO What instruments can be played at all?
+** TODO Upgrade to JFugue 4.1
 SCHEDULED: <2013-04-18 Thu>
+** TODO Introduce a scale factor to the beat counters
+SCHEDULED: <2013-04-18 Thu>
+** TODO What instruments can be played at all?
 ** TODO How timings work at all with JFugue?
 ** TODO Explore real queue data
 ** TODO Configuration - edge cases
