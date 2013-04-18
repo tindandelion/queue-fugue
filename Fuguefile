@@ -1,5 +1,6 @@
 # -*- mode: ruby -*-
 
+scale_factor 0.5
 background_beat '.......**...*..!', '*' => 'MARACAS', '!' => 'CRYSTAL'
 
 play 'CRASH_CYMBAL_1', when: ->(msg){ msg.text.size > 95 }
