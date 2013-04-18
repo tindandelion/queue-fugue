@@ -5,7 +5,6 @@ describe 'Configuration' do
   let(:config_file) { stub(:file) }
   
   it 'has no default instrument to play'
-  it 'treats instrument as default if no criterion is specified'
   it 'has no background beat'
   
   it 'configures the background beat' do
@@ -34,6 +33,17 @@ describe 'Configuration' do
   
   it 'configures the default beat counter as the last counter' do
     config.play 'MARACAS', default: true
+    config.play 'BANJO', when: ->(msg){ msg.size > 100 }
+    
+    instruments = config.instruments
+    instruments['A'].should eq('MARACAS')
+    
+    default_counter = config.counters.last
+    default_counter.marker.should eq('A')
+  end
+  
+  it 'treats instrument as default if no criterion is specified' do
+    config.play 'MARACAS'
     config.play 'BANJO', when: ->(msg){ msg.size > 100 }
     
     instruments = config.instruments

@@ -40,7 +40,7 @@ module QueueFugue
     def play(instrument, params = {})
       with_next_instrument do |marker|
         @instruments.add_mapping(marker, instrument)
-        if params[:default]
+        if default_counter?(params)
           @default_instrument = marker
         else
           counter = new_counter(marker)
@@ -60,6 +60,11 @@ module QueueFugue
     end
     
     private
+
+    def default_counter?(instrument_params)
+      instrument_params[:default] or
+        (not instrument_params.has_key?(:when))
+    end
     
     def with_next_instrument(&block)
       block.call(@next_instrument)
