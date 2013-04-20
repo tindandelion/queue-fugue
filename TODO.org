@@ -3,7 +3,7 @@
 * Development plan
 ** TODO Refactor Configuration spec so that it's clear that counters bind to instruments
 ** TODO What are improvements of JFugue 4.1 compared to 4.0.3?
-SCHEDULED: <2013-04-19 Fri>
+SCHEDULED: <2013-04-20 Sat>
 ** TODO Ugly sound gap on rhythm edges
 ** TODO Explore different instruments to play
 ** TODO How timings work at all with JFugue?
