@@ -31,6 +31,7 @@ describe "JFugue interface" do
       lambda {
         player = QueueFugue::JFuguePlayer.new(instruments)
         3.times { player.play_rhythm ['....*.....**...!'] }
+        player.close!
       }.should_not raise_error
     end
   end

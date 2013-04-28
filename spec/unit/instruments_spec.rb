@@ -1,5 +1,5 @@
+require 'queue_fugue/jfugue_player'
 require 'queue_fugue/instruments'
-require 'queue_fugue/jfugue-4.0.3.jar'
 
 describe 'Instruments' do
   

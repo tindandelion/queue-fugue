@@ -1,9 +1,11 @@
-require_relative 'jfugue-4.0.3.jar'
+require 'queue_fugue/log4j-1.2.17.jar'
+require 'queue_fugue/jfugue-4.1.0-SNAPSHOT.jar'
 
 module QueueFugue
   class JFuguePlayer
     def initialize(instruments)
       @instruments = instruments
+      @player = org.jfugue.Player.new(true, true)
     end
     
     def play_rhythm(rhythm_strings)
@@ -12,13 +14,14 @@ module QueueFugue
       do_play_rhythm(rhythm)
     end
     
+    def close!
+      @player.sequencer.close
+    end
+    
     protected
     
     def with_player(&block)
-      player = org.jfugue.Player.new
-      block.call(player)
-    ensure
-      player.close
+      block.call(@player)
     end
     
     private
@@ -37,13 +40,6 @@ module QueueFugue
       rhythm = org.jfugue.Rhythm.new
       @instruments.apply_to(rhythm)
       rhythm
-    end
-    
-    def with_player(&block)
-      player = org.jfugue.Player.new
-      block.call(player)
-    ensure
-      player.close
     end
   end
 end

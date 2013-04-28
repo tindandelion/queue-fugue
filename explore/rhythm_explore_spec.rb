@@ -1,9 +1,11 @@
-require 'queue_fugue/jfugue-4.0.3.jar'
+require 'queue_fugue/log4j-1.2.17.jar'
+require 'queue_fugue/jfugue-4.1.0-SNAPSHOT.jar'
 
 describe "JFugue working with rhythms" do
+  let(:player) { org.jfugue.Player.new }
+  
   it 'plays a rhythm' do
     rhythm = org.jfugue.Rhythm.new
-    player = org.jfugue.Player.new
     
     rhythm.set_layer(1, 'O..oO...O..oOO..')
     rhythm.set_layer(2, "..*...*...*...*.");
@@ -24,7 +26,6 @@ describe "JFugue working with rhythms" do
   
   it 'plays a rhythm' do
     rhythm = org.jfugue.Rhythm.new
-    player = org.jfugue.Player.new
     
     rhythm.set_layer(1, "................*");
     rhythm.set_layer(4, "........!........");
