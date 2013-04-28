@@ -1,9 +1,9 @@
 # -*- mode: ruby -*-
 
-scale_factor 0.5
+scale_factor 1
 background_beat '.......**...*..!', '*' => 'MARACAS', '!' => 'CRYSTAL'
 
 play 'CRASH_CYMBAL_1', when: ->(msg){ msg.text.size > 95 }
-play 'HAND_CLAP', when: ->(msg){ msg.text.size > 90 }
-play 'LOW_TOM', when: ->(msg){ msg.text.size > 50 }
+play 'LOW_TOM', when: ->(msg){ msg.text.size > 80 }
+play 'HAND_CLAP', when: ->(msg){ msg.text.size > 70 }
 play 'HI_BONGO', default: true
