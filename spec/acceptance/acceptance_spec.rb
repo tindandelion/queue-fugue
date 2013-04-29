@@ -72,7 +72,7 @@ describe "Acceptance tests for Queue Fugue" do
         app.stop!
       end
     end
-
+    
     it 'applies a scale factor when calculating the rhythm intencity' do
       app = create_application do
         scale_factor 0.5

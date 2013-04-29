@@ -4,6 +4,6 @@ scale_factor 1
 background_beat '.......**...*..!', '*' => 'MARACAS', '!' => 'CRYSTAL'
 
 play 'CRASH_CYMBAL_1', when: ->(msg){ msg.text.size > 95 }
-play 'LOW_TOM', when: ->(msg){ msg.text.size > 80 }
+play 'HIGH_TOM', when: ->(msg){ msg.text.size > 80 }
 play 'HAND_CLAP', when: ->(msg){ msg.text.size > 70 }
 play 'HI_BONGO', default: true

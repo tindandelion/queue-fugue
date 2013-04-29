@@ -1,3 +1,4 @@
+require 'queue_fugue/beat_counter'
 require 'queue_fugue/configuration'
 
 describe 'Configuration' do
@@ -21,36 +22,24 @@ describe 'Configuration' do
     config.play 'BANJO', when: ->(msg){ msg.size > 100 }
     config.play 'PIANO', when: ->(msg){ msg.size > 1000 }
     
-    instruments = config.instruments
-    instruments['A'].should eq('BANJO')
-    instruments['B'].should eq('PIANO')
-    
-    counters = config.counters
-    counters.size.should eq(2)
-    counters[0].marker.should eq('A')
-    counters[1].marker.should eq('B')
+    config.should have_counter(0, 'BANJO')
+    config.should have_counter(1, 'PIANO')
   end
   
   it 'configures the default beat counter as the last counter' do
     config.play 'MARACAS', default: true
     config.play 'BANJO', when: ->(msg){ msg.size > 100 }
     
-    instruments = config.instruments
-    instruments['A'].should eq('MARACAS')
-    
-    default_counter = config.counters.last
-    default_counter.marker.should eq('A')
+    last_index = 1
+    config.should have_counter(last_index, 'MARACAS')
   end
   
   it 'treats instrument as default if no criterion is specified' do
     config.play 'MARACAS'
     config.play 'BANJO', when: ->(msg){ msg.size > 100 }
-    
-    instruments = config.instruments
-    instruments['A'].should eq('MARACAS')
-    
-    default_counter = config.counters.last
-    default_counter.marker.should eq('A')
+
+    last_index = 1
+    config.should have_counter(last_index, 'MARACAS')
   end
   
   it 'applies an external configuration file to itself' do
@@ -60,8 +49,7 @@ describe 'Configuration' do
     config_file.should_receive(:read).and_return(config_string)
     
     config.apply_external(config_file)
-    
-    config.instruments['A'].should eq('MARACAS')
+    config.should have_counter(0, 'MARACAS')
   end
   
   it 'stays intact if external file does not exist' do
@@ -69,5 +57,21 @@ describe 'Configuration' do
       config_file.should_receive(:exist?).and_return(false)
       config.apply_external(config_file)
     }.should_not raise_error
+  end
+end
+
+RSpec::Matchers.define :have_counter do |index, instrument|
+  match do |config|
+    counter = config.counters[index]
+    config.instruments[counter.marker] == instrument
+  end
+  
+  failure_message_for_should do |actual_config|
+    "expected config to have a beat counter playing #{instrument} at index: #{index}, " +
+      "but found counters for: #{collect_instruments(actual_config).join(', ')}"
+  end
+  
+  def collect_instruments(config)
+    config.counters.collect {|c| config.instruments[c.marker] }
   end
 end

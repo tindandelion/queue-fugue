@@ -1,17 +1,18 @@
 #+CATEGORY: queue-fugue
 
 * Development plan
-** TODO Refactor Configuration spec so that it's clear that counters bind to instruments
-** TODO What are improvements of JFugue 4.1 compared to 4.0.3?
-SCHEDULED: <2013-04-20 Sat>
+** TODO Explore real queue data
+SCHEDULED: <2013-04-30 Tue>
 ** TODO Ugly sound gap on rhythm edges
 ** TODO Explore different instruments to play
 ** TODO How timings work at all with JFugue?
-** TODO Explore real queue data
 ** TODO Configuration - edge cases
 ** TODO Instruments class - redundant? 
 ** TODO Create a sample config file on demand
 ** TODO Acceptance tests fail if there are already messages in the queue
+** DONE Refactor Configuration spec so that it's clear that counters bind to instruments
+** DONE What are improvements of JFugue 4.1 compared to 4.0.3?
+SCHEDULED: <2013-04-20 Sat>
 ** DONE Deal with arbitrary messages (not only text messages)
 ** DONE Introduce a scale factor to the beat counters
 SCHEDULED: <2013-04-18 Thu>
